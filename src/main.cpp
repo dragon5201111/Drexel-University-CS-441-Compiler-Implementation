@@ -1,9 +1,5 @@
-#include <iostream>
+#include <memory>
 
-#include "../include/token/Token.h"
+int main() {
 
-int main(){
-    const std::string s = "foo";
-    const Identifier ident(s);
-    std::cout << ident.name;
 }
