@@ -81,11 +81,22 @@ Token Tokenizer::advance_current() {
 }
 
 Token Tokenizer::match(const char current_char, std::string value) {
-    if (input[++current] == '=') {
-        current++;
+    if (current + 1 < input_size && input[current + 1] == '=') {
+        current += 2;
         return Token(TokenType::OPERATOR, std::move(value));
     }
+    current++;
     return Token(TokenType::OPERATOR, std::string(1, current_char));
+}
+
+std::vector<Token> Tokenizer::collect() {
+    std::vector<Token> tokens;
+    Token token = peek();
+    do {
+        token = next();
+        tokens.push_back(token);
+    } while (token.get_type() != TokenType::END_OF_FILE);
+    return tokens;
 }
 
 

@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <unordered_map>
+#include <vector>
 
 #include "./Token.h"
 
@@ -37,4 +38,5 @@ public:
 
     Token peek();
     Token next();
+    std::vector<Token> collect();
 };
