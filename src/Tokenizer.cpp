@@ -35,18 +35,23 @@ Token Tokenizer::advance_current() {
         case '[': current++; return Token(TokenType::LEFT_BRACKET);
         case ']': current++; return Token(TokenType::RIGHT_BRACKET);
         case ':': current++; return Token(TokenType::COLON);
-        case '!': current++; return Token(TokenType::NOT);
         case '@': current++; return Token(TokenType::AT_SIGN);
         case '^': current++; return Token(TokenType::CARET);
         case '&': current++; return Token(TokenType::AMPERSAND);
         case '.': current++; return Token(TokenType::DOT);
         case ',': current++; return Token(TokenType::COMMA);
 
-        case '=': current++; return Token(TokenType::OPERATOR, "=");
         case '+': current++; return Token(TokenType::OPERATOR, "+");
         case '-': current++; return Token(TokenType::OPERATOR, "-");
         case '*': current++; return Token(TokenType::OPERATOR, "*");
         case '/': current++; return Token(TokenType::OPERATOR, "/");
+        case '<': current++; return Token(TokenType::OPERATOR, "<");
+        case '>': current++; return Token(TokenType::OPERATOR, ">");
+
+        case '!':
+            return match('!', "!=");
+        case '=':
+            return match('=', "==");
 
         default:
             if (std::isdigit(current_char)) {
@@ -74,5 +79,14 @@ Token Tokenizer::advance_current() {
             throw std::invalid_argument("Unsupported character: " + current_char);
     }
 }
+
+Token Tokenizer::match(const char current_char, std::string value) {
+    if (input[++current] == '=') {
+        current++;
+        return Token(TokenType::OPERATOR, std::move(value));
+    }
+    return Token(TokenType::OPERATOR, std::string(1, current_char));
+}
+
 
 
