@@ -1,11 +1,17 @@
+#include <fstream>
 #include <iostream>
-#include <bits/ostream.tcc>
+#include <sstream>
 
 #include "Expr.h"
 #include "Tokenizer.h"
 
 int main(const int argc, char* argv[]) {
-    Tokenizer tokenizer("x==2 , x=2, x != 2");
+    std::ifstream input("../test/source.441");
+
+    std::stringstream s;
+    s << input.rdbuf();
+
+    Tokenizer tokenizer(s.str());
     for (auto& token : tokenizer.collect()) {
         std::cout << token.to_string() << std::endl;
     }
