@@ -32,6 +32,8 @@ Token Tokenizer::advance_current() {
         case ')': current++; return Token(TokenType::RIGHT_PAREN);
         case '{': current++; return Token(TokenType::LEFT_BRACE);
         case '}': current++; return Token(TokenType::RIGHT_BRACE);
+        case '[': current++; return Token(TokenType::LEFT_BRACKET);
+        case ']': current++; return Token(TokenType::RIGHT_BRACKET);
         case ':': current++; return Token(TokenType::COLON);
         case '!': current++; return Token(TokenType::NOT);
         case '@': current++; return Token(TokenType::AT_SIGN);
@@ -39,6 +41,8 @@ Token Tokenizer::advance_current() {
         case '&': current++; return Token(TokenType::AMPERSAND);
         case '.': current++; return Token(TokenType::DOT);
         case ',': current++; return Token(TokenType::COMMA);
+
+        case '=': current++; return Token(TokenType::OPERATOR, "=");
         case '+': current++; return Token(TokenType::OPERATOR, "+");
         case '-': current++; return Token(TokenType::OPERATOR, "-");
         case '*': current++; return Token(TokenType::OPERATOR, "*");

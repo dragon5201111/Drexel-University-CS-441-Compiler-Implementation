@@ -13,6 +13,11 @@ class Tokenizer {
         {"return", Token(TokenType::RETURN)},
         {"print", Token(TokenType::PRINT)},
         {"this", Token(TokenType::THIS)},
+        {"class", Token(TokenType::CLASS)},
+        {"with", Token(TokenType::WITH)},
+        {"method", Token(TokenType::METHOD)},
+        {"locals", Token(TokenType::LOCALS)},
+        {"fields", Token(TokenType::FIELDS)}
     };
 
     std::string input;
@@ -23,7 +28,11 @@ class Tokenizer {
 
     Token advance_current();
 public:
-    explicit Tokenizer(std::string input) : input(std::move(input)), input_size(input.size()), current(0) {}
+    explicit Tokenizer(std::string input) {
+        this->input = std::move(input);
+        input_size = this->input.size();
+        current = 0;
+    }
 
     Token peek();
     Token next();
