@@ -13,5 +13,5 @@ int main(const int argc, char* argv[]) {
 
     Tokenizer tokenizer(s.str());
     Parser parser(tokenizer);
-    auto ss = parser.parse_stmt();
+    auto e = parser.parse_stmt();
 }

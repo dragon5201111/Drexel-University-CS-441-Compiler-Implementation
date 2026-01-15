@@ -16,7 +16,7 @@ class Parser {
     std::unique_ptr<Stmnt> parse_variable_assign_stmnt(const std::string& name);
     std::unique_ptr<Stmnt> parse_print_stmnt();
 
-    void check_token_type(const Token& token, TokenType expected, const std::string& expected_message);
+    static void check_token_type(const Token& token, TokenType expected, const std::string& expected_message) ;
 public:
     explicit Parser(Tokenizer tokenizer) : tokenizer(std::move(tokenizer)) {}
     std::unique_ptr<Expr> parse_expr();

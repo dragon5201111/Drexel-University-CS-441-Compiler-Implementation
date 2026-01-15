@@ -20,32 +20,22 @@ std::unique_ptr<Expr> Parser::parse_binary_expr() {
     std::unique_ptr<Expr> lhs = parse_expr();
 
     const Token op = tokenizer.next();
-    if (op.get_type() != TokenType::OPERATOR) {
-        throw std::runtime_error("Expected operator, got " + op.to_string());
-    }
+    check_token_type(op, TokenType::OPERATOR, "operator");
 
     std::unique_ptr<Expr> rhs = parse_expr();
-    if (const Token close = tokenizer.next(); close.get_type() != TokenType::RIGHT_PAREN) {
-        throw std::runtime_error("Expected right parenthesis, got " + close.to_string());
-    }
+    check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
 
     return std::make_unique<BinaryExpr>(std::move(lhs), op.get_value(), std::move(rhs));
 }
 
 std::unique_ptr<Expr> Parser::parse_method_call_expr() {
     std::unique_ptr<Expr> base = parse_expr();
-    if (const Token dot = tokenizer.next(); dot.get_type() != TokenType::DOT) {
-        throw std::runtime_error("Expected dot, got " + dot.to_string());
-    }
+    check_token_type(tokenizer.next(), TokenType::DOT, "dot");
 
     const Token method_name = tokenizer.next();
-    if (method_name.get_type() != TokenType::IDENTIFIER) {
-        throw std::runtime_error("Expected method name, got " + method_name.to_string());
-    }
+    check_token_type(method_name, TokenType::IDENTIFIER, "method name");
 
-    if (const Token open = tokenizer.next(); open.get_type() != TokenType::LEFT_PAREN) {
-        throw std::runtime_error("Expected left parenthesis, got " + open.to_string());
-    }
+    check_token_type(tokenizer.next(), TokenType::LEFT_PAREN, "left parenthesis");
 
     std::vector<std::unique_ptr<Expr>> args;
     if (tokenizer.peek().get_type() != TokenType::RIGHT_PAREN) {
@@ -58,33 +48,25 @@ std::unique_ptr<Expr> Parser::parse_method_call_expr() {
     }
 
     // Consume right parenthesis
-    if (const Token close = tokenizer.next(); close.get_type() != TokenType::RIGHT_PAREN) {
-        throw std::runtime_error("Expected right parenthesis, got " + close.to_string());
-    }
+    check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
 
     return std::make_unique<MethodCallExpr>(std::move(base), method_name.get_value(), std::move(args));
 }
 
 std::unique_ptr<Expr> Parser::parse_field_read_expr() {
     std::unique_ptr<Expr> base = parse_expr();
-    if (const Token dot = tokenizer.next(); dot.get_type() != TokenType::DOT) {
-        throw std::runtime_error("Expected dot, got " + dot.to_string());
-    }
+
+    check_token_type(tokenizer.next(), TokenType::DOT, "dot");
 
     const Token field_name = tokenizer.next();
-    if (field_name.get_type() != TokenType::IDENTIFIER) {
-        throw std::runtime_error("Expected field name, got " + field_name.to_string());
-    }
+    check_token_type(field_name, TokenType::IDENTIFIER, "field name");
 
     return std::make_unique<FieldReadExpr>(std::move(base), field_name.get_value());
 }
 
 std::unique_ptr<Expr> Parser::parse_class_ref_expr() {
     const Token class_name = tokenizer.next();
-    if (class_name.get_type() != TokenType::IDENTIFIER) {
-        throw std::runtime_error("Expected class name, got " + class_name.to_string());
-    }
-
+    check_token_type(class_name, TokenType::IDENTIFIER, "class name");
     return std::make_unique<ClassRefExpr>(class_name.get_value());
 }
 
@@ -92,18 +74,25 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
     switch (const Token token = tokenizer.next(); token.get_type()) {
         case TokenType::END_OF_FILE: throw std::runtime_error("No expression to parse, end of file.");
         case TokenType::IDENTIFIER: return parse_variable_assign_stmnt(token.get_value());
+        case TokenType::PRINT: return parse_print_stmnt();
         case TokenType::RETURN: return std::make_unique<ReturnStmnt>(parse_expr());
         default: throw std::runtime_error("Token " + token.to_string() + " is not a valid start of a statement.");
     }
 }
 
 std::unique_ptr<Stmnt> Parser::parse_variable_assign_stmnt(const std::string& name) {
-    if (const Token assign = tokenizer.next(); assign.get_type() != TokenType::ASSIGN) {
-        throw std::runtime_error("Expected assignment got, " + assign.to_string());
-    }
+    check_token_type(tokenizer.next(), TokenType::ASSIGN, "assign");
     return std::make_unique<VariableAssignStmnt>(name, parse_expr());
 }
 
+std::unique_ptr<Stmnt> Parser::parse_print_stmnt() {
+    check_token_type(tokenizer.next(), TokenType::LEFT_PAREN, "left parenthesis");
+    std::unique_ptr<Expr> expr = parse_expr();
+    check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
+    return std::make_unique<PrintStmnt>(std::move(expr));
+}
+
+// Helper method to avoid duplication
 void Parser::check_token_type(const Token &token, const TokenType expected, const std::string& expected_message) {
     if (token.get_type() != expected) {
         throw std::runtime_error("Expected " + expected_message + ", got " + token.to_string());
