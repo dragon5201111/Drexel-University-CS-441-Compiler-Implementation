@@ -18,6 +18,7 @@ public:
     void visit_discard_stmnt(const DiscardStmnt &stmnt) override;
     void visit_if_stmnt(const IfStmnt &stmnt) override;
     void visit_while_stmnt(const WhileStmnt &stmnt) override;
+    void print_stmnts(const std::vector<std::unique_ptr<Stmnt>>& stmnts);
     void visit_return_stmnt(const ReturnStmnt &stmnt) override;
     void visit_print_stmnt(const PrintStmnt &stmnt) override;
     void visit_field_update_stmnt(const FieldUpdateStmnt &stmnt) override;

@@ -14,6 +14,7 @@ class Parser {
     std::unique_ptr<Expr> parse_class_ref_expr();
 
     std::unique_ptr<Stmnt> parse_variable_assign_stmnt(const std::string& name);
+    std::unique_ptr<Stmnt> parse_field_update_stmnt();
     std::unique_ptr<Stmnt> parse_discard_stmnt();
     std::unique_ptr<Stmnt> parse_print_stmnt();
     std::unique_ptr<Stmnt> parse_if_stmnt(bool has_else_branch);

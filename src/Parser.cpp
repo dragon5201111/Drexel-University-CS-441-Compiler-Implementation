@@ -74,6 +74,7 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
     switch (const Token token = tokenizer.next(); token.get_type()) {
         case TokenType::END_OF_FILE: throw std::runtime_error("No expression to parse, end of file.");
         case TokenType::IDENTIFIER: return parse_variable_assign_stmnt(token.get_value());
+        case TokenType::NOT: return parse_field_update_stmnt();
         case TokenType::UNDERSCORE: return parse_discard_stmnt();
         case TokenType::PRINT: return parse_print_stmnt();
         case TokenType::IF: return parse_if_stmnt(true);
@@ -87,6 +88,17 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
 std::unique_ptr<Stmnt> Parser::parse_variable_assign_stmnt(const std::string& name) {
     check_token_type(tokenizer.next(), TokenType::ASSIGN, "assign");
     return std::make_unique<VariableAssignStmnt>(name, parse_expr());
+}
+
+std::unique_ptr<Stmnt> Parser::parse_field_update_stmnt() {
+    std::unique_ptr<Expr> base = parse_expr();
+    check_token_type(tokenizer.next(), TokenType::DOT, "dot");
+
+    const Token field_name = tokenizer.next();
+    check_token_type(field_name, TokenType::IDENTIFIER, "field name");
+
+    check_token_type(tokenizer.next(), TokenType::ASSIGN, "assign");
+    return std::make_unique<FieldUpdateStmnt>(std::move(base), std::move(field_name.get_value()), std::move(parse_expr()));
 }
 
 std::unique_ptr<Stmnt> Parser::parse_discard_stmnt() {
