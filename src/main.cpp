@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
 
@@ -13,5 +14,7 @@ int main(const int argc, char* argv[]) {
 
     Tokenizer tokenizer(s.str());
     Parser parser(tokenizer);
-    auto e = parser.parse_stmt();
+    auto e = parser.parse_expr();
+    AstPrinter ast_printer;
+    e->accept(ast_printer);
 }
