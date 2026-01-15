@@ -32,4 +32,6 @@ int main(const int argc, char* argv[]) {
     AstPrinter astPrinter;
     auto stmnt = parser.parse_stmt();
     stmnt->accept(astPrinter);
+    stmnt = parser.parse_stmt();
+    stmnt->accept(astPrinter);
 }

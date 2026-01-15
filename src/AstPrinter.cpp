@@ -52,6 +52,7 @@ void AstPrinter::visit_discard_stmnt(const DiscardStmnt &stmnt) {
 }
 
 void AstPrinter::visit_if_stmnt(const IfStmnt &stmnt) {
+    std::cout << std::endl;
     std::cout << "if ";
     stmnt.condition->accept(*this);
     std::cout << ": {";
@@ -62,6 +63,7 @@ void AstPrinter::visit_if_stmnt(const IfStmnt &stmnt) {
 }
 
 void AstPrinter::visit_while_stmnt(const WhileStmnt &stmnt) {
+    std::cout << std::endl;
     std::cout << "while ";
     stmnt.condition->accept(*this);
     std::cout << ": {";
