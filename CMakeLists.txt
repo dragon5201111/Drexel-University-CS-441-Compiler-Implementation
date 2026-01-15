@@ -14,4 +14,6 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/Parser.h
         include/expr.h
         src/Parser.cpp
-        include/Stmnt.h)
+        include/Stmnt.h
+        include/AstPrinter.h
+        src/AstPrinter.cpp)
