@@ -38,14 +38,20 @@ std::unique_ptr<Expr> Parser::parse_expr() {
             }
 
             std::vector<std::unique_ptr<Expr>> args;
-            while (tokenizer.peek().get_type() != TokenType::RIGHT_PAREN) {
-                std::unique_ptr<Expr> arg = parse_expr();
-                args.push_back(std::move(arg));
-                if (const Token comma = tokenizer.peek(); comma.get_type() != TokenType::COMMA) {
-                    throw std::runtime_error("Expected comma got, " + comma.to_string());
+            if (tokenizer.peek().get_type() != TokenType::RIGHT_PAREN) {
+                args.push_back(parse_expr());
+
+                while (tokenizer.peek().get_type() == TokenType::COMMA) {
+                    tokenizer.next();
+                    args.push_back(parse_expr());
                 }
-                tokenizer.next();
             }
+
+            // Consume right parenthesis
+            if (const Token close = tokenizer.next(); close.get_type() != TokenType::RIGHT_PAREN) {
+                throw std::runtime_error("Expected right parenthesis, got " + close.to_string());
+            }
+
             return std::make_unique<MethodCallExpr>(std::move(base), method_name.get_value(), std::move(args));
         }
 

@@ -23,10 +23,6 @@ public:
     virtual void visitConstantExpr(const ConstantExpr& expr) = 0;
 };
 
-class ExprPrinter : public ExprVisitor {
-
-};
-
 class Expr {
 public:
     virtual ~Expr() = default;
