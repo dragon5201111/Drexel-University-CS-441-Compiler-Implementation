@@ -1,5 +1,10 @@
-_ = 2
-_ = &e.f
-while (x > 1):{
-    x = 2
+if (x < y): {
+    r = ((x + y) + z)
+} else {
+    r = ((x + y) + z)
+    z = r
+    r = (z + 1)
+    return k
 }
+print(r)
+return ((x + y) + z)
