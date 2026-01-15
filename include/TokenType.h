@@ -28,6 +28,7 @@ enum class TokenType {
     LOCALS,
     FIELDS,
     // Tokens with data
+    ASSIGN,
     OPERATOR,
     NUMBER,
     IDENTIFIER

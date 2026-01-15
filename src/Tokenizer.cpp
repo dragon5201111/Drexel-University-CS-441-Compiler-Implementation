@@ -49,9 +49,9 @@ Token Tokenizer::advance_current() {
         case '>': current++; return Token(TokenType::OPERATOR, ">");
 
         case '!':
-            return match('!', "!=");
+            return match('!', "!=", TokenType::OPERATOR);
         case '=':
-            return match('=', "==");
+            return match('=', "==", TokenType::ASSIGN);
 
         default:
             if (std::isdigit(current_char)) {
@@ -80,13 +80,13 @@ Token Tokenizer::advance_current() {
     }
 }
 
-Token Tokenizer::match(const char current_char, std::string value) {
+Token Tokenizer::match(const char current_char, std::string value, const TokenType default_type) {
     if (current + 1 < input_size && input[current + 1] == '=') {
         current += 2;
         return Token(TokenType::OPERATOR, std::move(value));
     }
     current++;
-    return Token(TokenType::OPERATOR, std::string(1, current_char));
+    return Token(default_type, std::string(1, current_char));
 }
 
 std::vector<Token> Tokenizer::collect() {

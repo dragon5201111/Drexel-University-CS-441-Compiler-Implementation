@@ -89,6 +89,11 @@ std::unique_ptr<Expr> Parser::parse_class_ref_expr() {
 }
 
 std::unique_ptr<Stmnt> Parser::parse_stmt() {
-
+    switch (const Token token = tokenizer.next(); token.get_type()) {
+        case TokenType::END_OF_FILE: throw std::runtime_error("No expression to parse, end of file.");
+        case TokenType::IDENTIFIER: {
+        }
+        default: throw std::runtime_error("Token " + token.to_string() + " is not a valid start of a statement.");
+    }
 }
 

@@ -13,7 +13,4 @@ int main(const int argc, char* argv[]) {
 
     Tokenizer tokenizer(s.str());
     Parser parser(tokenizer);
-    for (auto& token : tokenizer.collect()) {
-        std::cout << token.to_string() << std::endl;
-    }
 }

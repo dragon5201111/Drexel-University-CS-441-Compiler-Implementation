@@ -42,6 +42,7 @@ public:
             case TokenType::PRINT: string_rep = "PRINT"; break;
             case TokenType::END_OF_FILE: string_rep = "END_OF_FILE"; break;
             case TokenType::OPERATOR: string_rep = "OPERATOR"; break;
+            case TokenType::ASSIGN: string_rep = "ASSIGN"; break;
             case TokenType::NUMBER: string_rep = "NUMBER"; break;
             case TokenType::IDENTIFIER: string_rep = "IDENTIFIER"; break;
             default: string_rep = "UNKNOWN";
