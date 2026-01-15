@@ -1,5 +1,6 @@
 #include "Parser.h"
 
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <bits/ostream.tcc>
@@ -166,8 +167,14 @@ std::unique_ptr<ClassDecl> Parser::parse_class_decl() {
 }
 
 std::vector<std::string> Parser::parse_field_decls() {
-    std::cerr << "PARSING FIELDS NOT IMPLEMENTED." << std::endl;
-    return {};
+    return parse_identifiers(
+        [this] {
+            const Token token = tokenizer.peek();
+            return token.get_type() != TokenType::METHOD
+                && token.get_type() != TokenType::RIGHT_BRACKET;
+        },
+        "field name"
+    );
 }
 
 std::vector<std::unique_ptr<MethodDecl> > Parser::parse_method_decls() {
@@ -175,6 +182,23 @@ std::vector<std::unique_ptr<MethodDecl> > Parser::parse_method_decls() {
     return {};
 }
 
+std::vector<std::string> Parser::parse_identifiers(
+    const std::function<bool()>& should_continue,
+    const std::string& what) {
+    std::vector<std::string> identifiers;
+
+    while (should_continue()) {
+        Token token = tokenizer.next();
+        check_token_type(token, TokenType::IDENTIFIER, what);
+        identifiers.push_back(token.get_value());
+
+        if (tokenizer.peek().get_type() == TokenType::COMMA) {
+            tokenizer.next();
+        }
+    }
+
+    return identifiers;
+}
 
 // Helper method to avoid duplication
 void Parser::check_token_type(const Token &token, const TokenType expected, const std::string& expected_message) {

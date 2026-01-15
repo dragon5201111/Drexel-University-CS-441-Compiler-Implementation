@@ -31,5 +31,6 @@ int main(const int argc, char* argv[]) {
     Parser parser(tokenizer);
     AstPrinter astPrinter;
     auto c = parser.parse_class_decl();
-
+    c = parser.parse_class_decl();
+    c = parser.parse_class_decl();
 }
