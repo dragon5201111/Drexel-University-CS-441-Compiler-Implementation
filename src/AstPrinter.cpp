@@ -44,11 +44,13 @@ void AstPrinter::visit_constant_expr(const ConstantExpr &expr) {
 void AstPrinter::visit_variable_assign_stmnt(const VariableAssignStmnt &stmnt) {
     std::cout << stmnt.name + "=";
     stmnt.initializer->accept(*this);
+    std::cout << std::endl;
 }
 
 void AstPrinter::visit_discard_stmnt(const DiscardStmnt &stmnt) {
-    std::cout << "Discard stmnt";
+    std::cout << "_ = ";
     stmnt.expr->accept(*this);
+    std::cout << std::endl;
 }
 
 void AstPrinter::visit_if_stmnt(const IfStmnt &stmnt) {
