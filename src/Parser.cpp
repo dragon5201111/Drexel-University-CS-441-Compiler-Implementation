@@ -177,11 +177,12 @@ std::vector<std::string> Parser::parse_field_decls() {
     );
 }
 
-std::vector<std::unique_ptr<MethodDecl> > Parser::parse_method_decls() {
+std::vector<std::unique_ptr<MethodDecl>> Parser::parse_method_decls() {
     std::cerr << "PARSING METHOD DECLARATIONS NOT IMPLEMENTED." << std::endl;
     return {};
 }
 
+// Helper method to aid with parsing method declarations
 std::vector<std::string> Parser::parse_identifiers(
     const std::function<bool()>& should_continue,
     const std::string& what) {
@@ -200,7 +201,7 @@ std::vector<std::string> Parser::parse_identifiers(
     return identifiers;
 }
 
-// Helper method to avoid duplication
+// Helper method to avoid duplication across parser
 void Parser::check_token_type(const Token &token, const TokenType expected, const std::string& expected_message) {
     if (token.get_type() != expected) {
         throw std::runtime_error("Expected " + expected_message + ", got " + token.to_string());
