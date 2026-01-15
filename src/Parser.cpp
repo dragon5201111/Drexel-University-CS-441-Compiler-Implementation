@@ -88,3 +88,7 @@ std::unique_ptr<Expr> Parser::parse_class_ref_expr() {
     return std::make_unique<ClassRefExpr>(class_name.get_value());
 }
 
+std::unique_ptr<Stmnt> Parser::parse_stmt() {
+
+}
+

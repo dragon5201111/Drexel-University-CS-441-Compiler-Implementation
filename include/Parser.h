@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "Expr.h"
+#include "Stmnt.h"
 #include "Tokenizer.h"
 
 class Parser {
@@ -14,4 +15,5 @@ class Parser {
 public:
     explicit Parser(Tokenizer tokenizer) : tokenizer(std::move(tokenizer)) {}
     std::unique_ptr<Expr> parse_expr();
+    std::unique_ptr<Stmnt> parse_stmt();
 };

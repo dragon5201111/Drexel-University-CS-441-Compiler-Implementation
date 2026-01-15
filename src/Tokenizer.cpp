@@ -76,7 +76,7 @@ Token Tokenizer::advance_current() {
                 return Token(TokenType::IDENTIFIER, fragment);
             }
 
-            throw std::invalid_argument("Unsupported character: " + current_char);
+            throw std::invalid_argument("Unsupported character: " + std::string(1, current_char));
     }
 }
 

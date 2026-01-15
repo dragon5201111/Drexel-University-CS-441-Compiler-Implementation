@@ -14,13 +14,13 @@ class ConstantExpr;
 class ExprVisitor {
 public:
     virtual ~ExprVisitor() = default;
-    virtual void visitBinaryExpr(const BinaryExpr& expr) = 0;
-    virtual void visitFieldReadExpr(const FieldReadExpr& expr) = 0;
-    virtual void visitVariableExpr(const VariableExpr& expr) = 0;
-    virtual void visitMethodCallExpr(const MethodCallExpr& expr) = 0;
-    virtual void visitThisExpr(const ThisExpr& expr) = 0;
-    virtual void visitClassRefExpr(const ClassRefExpr& expr) = 0;
-    virtual void visitConstantExpr(const ConstantExpr& expr) = 0;
+    virtual void visit_binary_expr(const BinaryExpr& expr) = 0;
+    virtual void visit_field_read_expr(const FieldReadExpr& expr) = 0;
+    virtual void visit_variable_expr(const VariableExpr& expr) = 0;
+    virtual void visit_method_call_expr(const MethodCallExpr& expr) = 0;
+    virtual void visit_this_expr(const ThisExpr& expr) = 0;
+    virtual void visit_class_ref_expr(const ClassRefExpr& expr) = 0;
+    virtual void visit_constant_expr(const ConstantExpr& expr) = 0;
 };
 
 class Expr {
@@ -38,7 +38,7 @@ public:
         : lhs(std::move(lhs)), rhs(std::move(rhs)), op(std::move(op)) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitBinaryExpr(*this);
+        visitor.visit_binary_expr(*this);
     }
 };
 
@@ -49,7 +49,7 @@ public:
     FieldReadExpr(std::unique_ptr<Expr> base, std::string field_name) : base(std::move(base)), field_name(std::move(field_name)) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitFieldReadExpr(*this);
+        visitor.visit_field_read_expr(*this);
     }
 };
 
@@ -59,7 +59,7 @@ public:
     explicit VariableExpr(std::string name) : name(std::move(name)) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitVariableExpr(*this);
+        visitor.visit_variable_expr(*this);
     }
 };
 
@@ -72,14 +72,14 @@ public:
         : base(std::move(base)), method_name(std::move(method_name)), args(std::move(args)) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitMethodCallExpr(*this);
+        visitor.visit_method_call_expr(*this);
     }
 };
 
 class ThisExpr final : public Expr {
 public:
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitThisExpr(*this);
+        visitor.visit_this_expr(*this);
     }
 };
 
@@ -89,7 +89,7 @@ public:
     explicit ClassRefExpr(std::string class_name) : class_name(std::move(class_name)) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitClassRefExpr(*this);
+        visitor.visit_class_ref_expr(*this);
     }
 };
 
@@ -99,6 +99,6 @@ public:
     explicit ConstantExpr(const uint32_t value) : value(value) {}
 
     void accept(ExprVisitor& visitor) const override {
-        visitor.visitConstantExpr(*this);
+        visitor.visit_constant_expr(*this);
     }
 };
