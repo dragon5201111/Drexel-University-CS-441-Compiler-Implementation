@@ -6,6 +6,7 @@
 #include "Tokenizer.h"
 
 int main(const int argc, char* argv[]) {
+    std::cerr << "UNIMPLEMENTED COMMAND!" << std::endl;
     std::ifstream input("../test/source.441");
 
     std::stringstream s;

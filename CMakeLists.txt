@@ -12,4 +12,5 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/Tokenizer.h
         src/Tokenizer.cpp
         include/Parser.h
-        include/expr.h)
+        include/expr.h
+        src/Parser.cpp)

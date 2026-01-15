@@ -7,6 +7,9 @@ class BinaryExpr;
 class FieldReadExpr;
 class VariableExpr;
 class MethodCallExpr;
+class ThisExpr;
+class ClassRefExpr;
+class ConstantExpr;
 
 class ExprVisitor {
 public:
@@ -15,6 +18,13 @@ public:
     virtual void visitFieldReadExpr(const FieldReadExpr& expr) = 0;
     virtual void visitVariableExpr(const VariableExpr& expr) = 0;
     virtual void visitMethodCallExpr(const MethodCallExpr& expr) = 0;
+    virtual void visitThisExpr(const ThisExpr& expr) = 0;
+    virtual void visitClassRefExpr(const ClassRefExpr& expr) = 0;
+    virtual void visitConstantExpr(const ConstantExpr& expr) = 0;
+};
+
+class ExprPrinter : public ExprVisitor {
+
 };
 
 class Expr {
@@ -25,11 +35,11 @@ public:
 
 class BinaryExpr final : public Expr{
 public:
-    std::unique_ptr<Expr> lhs;
+    std::unique_ptr<Expr> lhs, rhs;
     std::string op;
-    std::unique_ptr<Expr> rhs;
+
     BinaryExpr(std::unique_ptr<Expr> lhs, std::string op,  std::unique_ptr<Expr> rhs)
-        : lhs(std::move(lhs)), op(std::move(op)), rhs(std::move(rhs)) {}
+        : lhs(std::move(lhs)), rhs(std::move(rhs)), op(std::move(op)) {}
 
     void accept(ExprVisitor& visitor) const override {
         visitor.visitBinaryExpr(*this);
@@ -67,5 +77,32 @@ public:
 
     void accept(ExprVisitor& visitor) const override {
         visitor.visitMethodCallExpr(*this);
+    }
+};
+
+class ThisExpr final : public Expr {
+public:
+    void accept(ExprVisitor& visitor) const override {
+        visitor.visitThisExpr(*this);
+    }
+};
+
+class ClassRefExpr final : public Expr {
+public:
+    std::string class_name;
+    explicit ClassRefExpr(std::string class_name) : class_name(std::move(class_name)) {}
+
+    void accept(ExprVisitor& visitor) const override {
+        visitor.visitClassRefExpr(*this);
+    }
+};
+
+class ConstantExpr final : public Expr {
+public:
+    uint32_t value;
+    explicit ConstantExpr(const uint32_t value) : value(value) {}
+
+    void accept(ExprVisitor& visitor) const override {
+        visitor.visitConstantExpr(*this);
     }
 };
