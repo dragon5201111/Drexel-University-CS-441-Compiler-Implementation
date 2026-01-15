@@ -1,10 +1,9 @@
-if (x < y): {
-    r = ((x + y) + z)
-} else {
-    r = ((x + y) + z)
-    z = r
-    r = (z + 1)
-    return k
-}
-print(r)
-return ((x + y) + z)
+class foo [
+    fields
+]
+
+class foo [
+   fields
+   method m() with locals:
+    print(e)
+]

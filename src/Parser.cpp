@@ -1,6 +1,8 @@
 #include "Parser.h"
 
+#include <iostream>
 #include <stdexcept>
+#include <bits/ostream.tcc>
 
 std::unique_ptr<Expr> Parser::parse_expr() {
     switch (const Token token = tokenizer.next(); token.get_type()) {
@@ -146,6 +148,33 @@ std::vector<std::unique_ptr<Stmnt>> Parser::parse_branch() {
     check_token_type(tokenizer.next(), TokenType::RIGHT_BRACE, "right brace");
     return branch;
 }
+
+std::unique_ptr<ClassDecl> Parser::parse_class_decl() {
+    check_token_type(tokenizer.next(), TokenType::CLASS, "class");
+
+    const Token class_name = tokenizer.next();
+    check_token_type(class_name, TokenType::IDENTIFIER, "identifier");
+
+    check_token_type(tokenizer.next(), TokenType::LEFT_BRACKET, "left bracket");
+    check_token_type(tokenizer.next(), TokenType::FIELDS, "fields");
+
+    std::vector<std::string> fields = parse_field_decls();
+    std::vector<std::unique_ptr<MethodDecl>> methods = parse_method_decls();
+
+    check_token_type(tokenizer.next(), TokenType::RIGHT_BRACKET, "right bracket");
+    return std::make_unique<ClassDecl>(std::move(class_name.get_value()), std::move(fields), std::move(methods));
+}
+
+std::vector<std::string> Parser::parse_field_decls() {
+    std::cerr << "PARSING FIELDS NOT IMPLEMENTED." << std::endl;
+    return {};
+}
+
+std::vector<std::unique_ptr<MethodDecl> > Parser::parse_method_decls() {
+    std::cerr << "PARSING METHOD DECLARATIONS NOT IMPLEMENTED." << std::endl;
+    return {};
+}
+
 
 // Helper method to avoid duplication
 void Parser::check_token_type(const Token &token, const TokenType expected, const std::string& expected_message) {

@@ -4,6 +4,7 @@
 
 #include "Expr.h"
 #include "Stmnt.h"
+#include "Class.h"
 #include "Tokenizer.h"
 
 class Parser {
@@ -21,9 +22,13 @@ class Parser {
     std::unique_ptr<Stmnt> parse_while_stmnt();
     std::vector<std::unique_ptr<Stmnt>> parse_branch();
 
+    std::vector<std::string> parse_field_decls();
+    std::vector<std::unique_ptr<MethodDecl>> parse_method_decls();
+
     static void check_token_type(const Token& token, TokenType expected, const std::string& expected_message) ;
 public:
     explicit Parser(Tokenizer tokenizer) : tokenizer(std::move(tokenizer)) {}
     std::unique_ptr<Expr> parse_expr();
     std::unique_ptr<Stmnt> parse_stmt();
+    std::unique_ptr<ClassDecl> parse_class_decl();
 };
