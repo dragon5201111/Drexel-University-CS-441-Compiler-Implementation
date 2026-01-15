@@ -12,4 +12,7 @@ int main(const int argc, char* argv[]) {
 
     Tokenizer tokenizer(s.str());
     Parser parser(tokenizer);
+    while (true) {
+        auto e = parser.parse_expr();
+    }
 }
