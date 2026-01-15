@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 #include "Parser.h"
@@ -12,7 +13,7 @@ int main(const int argc, char* argv[]) {
 
     Tokenizer tokenizer(s.str());
     Parser parser(tokenizer);
-    while (true) {
-        auto e = parser.parse_expr();
+    for (auto& token : tokenizer.collect()) {
+        std::cout << token.to_string() << std::endl;
     }
 }
