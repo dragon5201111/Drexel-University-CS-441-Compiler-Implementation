@@ -14,6 +14,7 @@ enum class TokenType {
     DOT,
     COLON,
     COMMA,
+
     // Keywords
     CLASS,
     THIS,
@@ -27,9 +28,10 @@ enum class TokenType {
     METHOD,
     LOCALS,
     FIELDS,
-    // Tokens with data
+
     ASSIGN,
     OPERATOR,
     NUMBER,
-    IDENTIFIER
+    IDENTIFIER,
+    UNDERSCORE,
 };

@@ -74,6 +74,7 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
     switch (const Token token = tokenizer.next(); token.get_type()) {
         case TokenType::END_OF_FILE: throw std::runtime_error("No expression to parse, end of file.");
         case TokenType::IDENTIFIER: return parse_variable_assign_stmnt(token.get_value());
+        case TokenType::UNDERSCORE: return parse_discard_stmnt();
         case TokenType::PRINT: return parse_print_stmnt();
         case TokenType::RETURN: return std::make_unique<ReturnStmnt>(parse_expr());
         default: throw std::runtime_error("Token " + token.to_string() + " is not a valid start of a statement.");
@@ -83,6 +84,11 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
 std::unique_ptr<Stmnt> Parser::parse_variable_assign_stmnt(const std::string& name) {
     check_token_type(tokenizer.next(), TokenType::ASSIGN, "assign");
     return std::make_unique<VariableAssignStmnt>(name, parse_expr());
+}
+
+std::unique_ptr<Stmnt> Parser::parse_discard_stmnt() {
+    check_token_type(tokenizer.next(), TokenType::ASSIGN, "assign");
+    return std::make_unique<DiscardStmnt>(parse_expr());
 }
 
 std::unique_ptr<Stmnt> Parser::parse_print_stmnt() {

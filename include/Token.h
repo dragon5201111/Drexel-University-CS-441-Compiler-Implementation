@@ -29,6 +29,7 @@ public:
             case TokenType::DOT: string_rep = "DOT"; break;
             case TokenType::COLON: string_rep = "COLON"; break;
             case TokenType::COMMA: string_rep = "COMMA"; break;
+            case TokenType::UNDERSCORE: string_rep = "UNDERSCORE"; break;
             case TokenType::CLASS: string_rep = "CLASS"; break;
             case TokenType::WITH: string_rep = "WITH"; break;
             case TokenType::METHOD: string_rep = "METHOD"; break;

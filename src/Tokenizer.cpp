@@ -40,7 +40,7 @@ Token Tokenizer::advance_current() {
         case '&': current++; return Token(TokenType::AMPERSAND);
         case '.': current++; return Token(TokenType::DOT);
         case ',': current++; return Token(TokenType::COMMA);
-
+        case '_': current++; return Token(TokenType::UNDERSCORE);
         case '+': current++; return Token(TokenType::OPERATOR, "+");
         case '-': current++; return Token(TokenType::OPERATOR, "-");
         case '*': current++; return Token(TokenType::OPERATOR, "*");
@@ -49,7 +49,7 @@ Token Tokenizer::advance_current() {
         case '>': current++; return Token(TokenType::OPERATOR, ">");
 
         case '!':
-            return match_operator('!', "!=", TokenType::OPERATOR);
+            return match_operator('!', "!=", TokenType::NOT);
         case '=':
             return match_operator('=', "==", TokenType::ASSIGN);
 

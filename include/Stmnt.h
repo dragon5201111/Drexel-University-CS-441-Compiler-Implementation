@@ -3,6 +3,7 @@
 #include "Stmnt.h"
 
 class VariableAssignStmnt;
+class DiscardStmnt;
 class IfStmnt;
 class WhileStmnt;
 class ReturnStmnt;
@@ -13,6 +14,7 @@ class StmntVisitor {
 public:
     virtual ~StmntVisitor() = default;
     virtual void visit_variable_assign_stmnt(const VariableAssignStmnt& stmnt) = 0;
+    virtual void visit_discard_stmnt(const DiscardStmnt& stmnt) = 0;
     virtual void visit_if_stmnt(const IfStmnt& stmnt) = 0;
     virtual void visit_while_stmnt(const WhileStmnt& stmnt) = 0;
     virtual void visit_return_stmnt(const ReturnStmnt& stmnt) = 0;
@@ -35,6 +37,17 @@ public:
 
     void accept(StmntVisitor& visitor) const override {
         visitor.visit_variable_assign_stmnt(*this);
+    }
+};
+
+class DiscardStmnt final: public Stmnt {
+public:
+    std::unique_ptr<Expr> expr;
+
+    explicit DiscardStmnt(std::unique_ptr<Expr> expr) : expr(std::move(expr)) {}
+
+    void accept(StmntVisitor& visitor) const override {
+        visitor.visit_discard_stmnt(*this);
     }
 };
 
