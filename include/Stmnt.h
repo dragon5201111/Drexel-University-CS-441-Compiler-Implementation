@@ -30,8 +30,8 @@ public:
 
 class VariableAssignStmnt final: public Stmnt {
 public:
-    const std::string name;
-    const std::unique_ptr<Expr> initializer;
+    std::string name;
+    std::unique_ptr<Expr> initializer;
 
     explicit VariableAssignStmnt(std::string name, std::unique_ptr<Expr> initializer) : name(std::move(name)), initializer(std::move(initializer)) {}
 
@@ -51,16 +51,16 @@ public:
     }
 };
 
+// Can reuse IfStmnt class for if only, with empty else branch
 class IfStmnt final: public Stmnt {
 public:
-    const std::unique_ptr<Expr> condition;
-    const std::vector<std::unique_ptr<Stmnt>> then_branch;
-    const std::vector<std::unique_ptr<Stmnt>> else_branch;
+    std::unique_ptr<Expr> condition;
+    std::vector<std::unique_ptr<Stmnt>> then_branch;
+    std::vector<std::unique_ptr<Stmnt>> else_branch;
 
     explicit IfStmnt(std::unique_ptr<Expr> condition,
         std::vector<std::unique_ptr<Stmnt>> then_branch,
-        // Else branch is an empty vector for if only statements; no need to create a separate class for if only statement
-        std::vector<std::unique_ptr<Stmnt>> else_branch = {}) :
+        std::vector<std::unique_ptr<Stmnt>> else_branch) :
     condition(std::move(condition)), then_branch(std::move(then_branch)), else_branch(std::move(else_branch)) {}
 
     void accept(StmntVisitor& visitor) const override {
@@ -70,8 +70,8 @@ public:
 
 class WhileStmnt final: public Stmnt {
 public:
-    const std::unique_ptr<Expr> condition;
-    const std::vector<std::unique_ptr<Stmnt>> body;
+    std::unique_ptr<Expr> condition;
+    std::vector<std::unique_ptr<Stmnt>> body;
 
     explicit WhileStmnt(std::unique_ptr<Expr> condition, std::vector<std::unique_ptr<Stmnt>> body) : condition(std::move(condition)), body(std::move(body)) {}
 
@@ -82,7 +82,7 @@ public:
 
 class ReturnStmnt final: public Stmnt {
 public:
-    const std::unique_ptr<Expr> expr;
+    std::unique_ptr<Expr> expr;
     explicit ReturnStmnt(std::unique_ptr<Expr> expr) : expr(std::move(expr)) {}
 
     void accept(StmntVisitor& visitor) const override {
@@ -92,7 +92,7 @@ public:
 
 class PrintStmnt final: public Stmnt {
 public:
-    const std::unique_ptr<Expr> expr;
+    std::unique_ptr<Expr> expr;
     explicit PrintStmnt(std::unique_ptr<Expr> expr) : expr(std::move(expr)) {}
 
     void accept(StmntVisitor& visitor) const override {
@@ -102,9 +102,9 @@ public:
 
 class FieldUpdateStmnt final: public Stmnt {
 public:
-    const std::unique_ptr<Expr> base;
-    const std::string field_name;
-    const std::unique_ptr<Expr> value;
+    std::unique_ptr<Expr> base;
+    std::string field_name;
+    std::unique_ptr<Expr> value;
 
     explicit FieldUpdateStmnt(std::unique_ptr<Expr> base, std::string field_name, std::unique_ptr<Expr> value) :
         base(std::move(base)), field_name(std::move(field_name)), value(std::move(value)) {}

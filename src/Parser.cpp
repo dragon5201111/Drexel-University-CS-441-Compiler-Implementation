@@ -76,6 +76,9 @@ std::unique_ptr<Stmnt> Parser::parse_stmt() {
         case TokenType::IDENTIFIER: return parse_variable_assign_stmnt(token.get_value());
         case TokenType::UNDERSCORE: return parse_discard_stmnt();
         case TokenType::PRINT: return parse_print_stmnt();
+        case TokenType::IF: return parse_if_stmnt(true);
+        case TokenType::IF_ONLY: return parse_if_stmnt(false);
+        case TokenType::WHILE: return parse_while_stmnt();
         case TokenType::RETURN: return std::make_unique<ReturnStmnt>(parse_expr());
         default: throw std::runtime_error("Token " + token.to_string() + " is not a valid start of a statement.");
     }
@@ -96,6 +99,40 @@ std::unique_ptr<Stmnt> Parser::parse_print_stmnt() {
     std::unique_ptr<Expr> expr = parse_expr();
     check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
     return std::make_unique<PrintStmnt>(std::move(expr));
+}
+
+std::unique_ptr<Stmnt> Parser::parse_if_stmnt(const bool has_else_branch) {
+    std::unique_ptr<Expr> condition = parse_expr();
+    check_token_type(tokenizer.next(), TokenType::COLON, "colon");
+
+    std::vector<std::unique_ptr<Stmnt>> then_branch = parse_branch();
+
+
+    std::vector<std::unique_ptr<Stmnt>> else_branch;
+    if (has_else_branch) {
+        check_token_type(tokenizer.next(), TokenType::ELSE, "else");
+        else_branch = std::move(parse_branch());
+    }
+
+    return std::make_unique<IfStmnt>(std::move(condition), std::move(then_branch), std::move(else_branch));
+}
+
+std::unique_ptr<Stmnt> Parser::parse_while_stmnt() {
+    std::unique_ptr<Expr> condition = parse_expr();
+    check_token_type(tokenizer.next(), TokenType::COLON, "colon");
+    return std::make_unique<WhileStmnt>(std::move(condition), std::move(parse_branch()));
+}
+
+std::vector<std::unique_ptr<Stmnt>> Parser::parse_branch() {
+    check_token_type(tokenizer.next(), TokenType::LEFT_BRACE, "left brace");
+
+    std::vector<std::unique_ptr<Stmnt>> branch;
+    while (tokenizer.peek().get_type() != TokenType::RIGHT_BRACE) {
+        branch.push_back(parse_stmt());
+    }
+
+    check_token_type(tokenizer.next(), TokenType::RIGHT_BRACE, "right brace");
+    return branch;
 }
 
 // Helper method to avoid duplication

@@ -2,7 +2,7 @@
 #include "Expr.h"
 #include "Stmnt.h"
 
-class AstPrinter : public ExprVisitor, StmntVisitor {
+class AstPrinter : public ExprVisitor, public StmntVisitor {
 public:
     // Expression methods
     void visit_binary_expr(const BinaryExpr &expr) override;

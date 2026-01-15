@@ -107,5 +107,10 @@ std::vector<Token> Tokenizer::collect() {
     return tokens;
 }
 
+void Tokenizer::reset() {
+    current = 0;
+    cached.reset();
+}
+
 
 

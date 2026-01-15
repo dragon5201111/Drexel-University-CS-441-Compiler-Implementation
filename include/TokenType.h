@@ -20,6 +20,7 @@ enum class TokenType {
     THIS,
     IF,
     IF_ONLY,
+    ELSE,
     WHILE,
     RETURN,
     PRINT,

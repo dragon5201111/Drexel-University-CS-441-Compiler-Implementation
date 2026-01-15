@@ -38,6 +38,7 @@ public:
             case TokenType::THIS: string_rep = "THIS"; break;
             case TokenType::IF: string_rep = "IF"; break;
             case TokenType::IF_ONLY: string_rep = "IF_ONLY"; break;
+            case TokenType::ELSE: string_rep = "ELSE"; break;
             case TokenType::WHILE: string_rep = "WHILE"; break;
             case TokenType::RETURN: string_rep = "RETURN"; break;
             case TokenType::PRINT: string_rep = "PRINT"; break;

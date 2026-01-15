@@ -31,8 +31,8 @@ public:
 
 class BinaryExpr final : public Expr{
 public:
-    const std::unique_ptr<Expr> lhs, rhs;
-    const std::string op;
+    std::unique_ptr<Expr> lhs, rhs;
+    std::string op;
 
     BinaryExpr(std::unique_ptr<Expr> lhs, std::string op,  std::unique_ptr<Expr> rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)), op(std::move(op)) {}
@@ -44,8 +44,8 @@ public:
 
 class FieldReadExpr final : public Expr {
 public:
-    const std::unique_ptr<Expr> base;
-    const std::string field_name;
+    std::unique_ptr<Expr> base;
+    std::string field_name;
 
     FieldReadExpr(std::unique_ptr<Expr> base, std::string field_name) : base(std::move(base)), field_name(std::move(field_name)) {}
 
@@ -56,7 +56,7 @@ public:
 
 class VariableExpr final : public Expr {
 public:
-    const std::string name;
+    std::string name;
 
     explicit VariableExpr(std::string name) : name(std::move(name)) {}
 
@@ -67,9 +67,9 @@ public:
 
 class MethodCallExpr final : public Expr {
 public:
-    const std::unique_ptr<Expr> base;
-    const std::string method_name;
-    const std::vector<std::unique_ptr<Expr>> args;
+    std::unique_ptr<Expr> base;
+    std::string method_name;
+    std::vector<std::unique_ptr<Expr>> args;
 
     MethodCallExpr(std::unique_ptr<Expr> base, std::string method_name, std::vector<std::unique_ptr<Expr>> args)
         : base(std::move(base)), method_name(std::move(method_name)), args(std::move(args)) {}
@@ -88,7 +88,7 @@ public:
 
 class ClassRefExpr final : public Expr {
 public:
-    const std::string class_name;
+    std::string class_name;
     explicit ClassRefExpr(std::string class_name) : class_name(std::move(class_name)) {}
 
     void accept(ExprVisitor& visitor) const override {
@@ -98,7 +98,7 @@ public:
 
 class ConstantExpr final : public Expr {
 public:
-    const uint32_t value;
+    uint32_t value;
     explicit ConstantExpr(const uint32_t value) : value(value) {}
 
     void accept(ExprVisitor& visitor) const override {

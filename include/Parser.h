@@ -16,6 +16,9 @@ class Parser {
     std::unique_ptr<Stmnt> parse_variable_assign_stmnt(const std::string& name);
     std::unique_ptr<Stmnt> parse_discard_stmnt();
     std::unique_ptr<Stmnt> parse_print_stmnt();
+    std::unique_ptr<Stmnt> parse_if_stmnt(bool has_else_branch);
+    std::unique_ptr<Stmnt> parse_while_stmnt();
+    std::vector<std::unique_ptr<Stmnt>> parse_branch();
 
     static void check_token_type(const Token& token, TokenType expected, const std::string& expected_message) ;
 public:
