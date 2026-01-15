@@ -28,8 +28,8 @@ public:
 
 class VariableAssignStmnt final: public Stmnt {
 public:
-    std::string name;
-    std::unique_ptr<Expr> initializer;
+    const std::string name;
+    const std::unique_ptr<Expr> initializer;
 
     explicit VariableAssignStmnt(std::string name, std::unique_ptr<Expr> initializer) : name(std::move(name)), initializer(std::move(initializer)) {}
 
@@ -40,9 +40,9 @@ public:
 
 class IfStmnt final: public Stmnt {
 public:
-    std::unique_ptr<Expr> condition;
-    std::vector<std::unique_ptr<Stmnt>> then_branch;
-    std::vector<std::unique_ptr<Stmnt>> else_branch;
+    const std::unique_ptr<Expr> condition;
+    const std::vector<std::unique_ptr<Stmnt>> then_branch;
+    const std::vector<std::unique_ptr<Stmnt>> else_branch;
 
     explicit IfStmnt(std::unique_ptr<Expr> condition,
         std::vector<std::unique_ptr<Stmnt>> then_branch,
@@ -57,8 +57,8 @@ public:
 
 class WhileStmnt final: public Stmnt {
 public:
-    std::unique_ptr<Expr> condition;
-    std::vector<std::unique_ptr<Stmnt>> body;
+    const std::unique_ptr<Expr> condition;
+    const std::vector<std::unique_ptr<Stmnt>> body;
 
     explicit WhileStmnt(std::unique_ptr<Expr> condition, std::vector<std::unique_ptr<Stmnt>> body) : condition(std::move(condition)), body(std::move(body)) {}
 
@@ -69,7 +69,7 @@ public:
 
 class ReturnStmnt final: public Stmnt {
 public:
-    std::unique_ptr<Expr> expr;
+    const std::unique_ptr<Expr> expr;
     explicit ReturnStmnt(std::unique_ptr<Expr> expr) : expr(std::move(expr)) {}
 
     void accept(StmntVisitor& visitor) const override {
@@ -79,7 +79,7 @@ public:
 
 class PrintStmnt final: public Stmnt {
 public:
-    std::unique_ptr<Expr> expr;
+    const std::unique_ptr<Expr> expr;
     explicit PrintStmnt(std::unique_ptr<Expr> expr) : expr(std::move(expr)) {}
 
     void accept(StmntVisitor& visitor) const override {
@@ -89,9 +89,9 @@ public:
 
 class FieldUpdateStmnt final: public Stmnt {
 public:
-    std::unique_ptr<Expr> base;
-    std::string field_name;
-    std::unique_ptr<Expr> value;
+    const std::unique_ptr<Expr> base;
+    const std::string field_name;
+    const std::unique_ptr<Expr> value;
 
     explicit FieldUpdateStmnt(std::unique_ptr<Expr> base, std::string field_name, std::unique_ptr<Expr> value) :
         base(std::move(base)), field_name(std::move(field_name)), value(std::move(value)) {}
