@@ -91,9 +91,15 @@ std::unique_ptr<Expr> Parser::parse_class_ref_expr() {
 std::unique_ptr<Stmnt> Parser::parse_stmt() {
     switch (const Token token = tokenizer.next(); token.get_type()) {
         case TokenType::END_OF_FILE: throw std::runtime_error("No expression to parse, end of file.");
-        case TokenType::IDENTIFIER: {
-        }
+        case TokenType::IDENTIFIER: return parse_variable_assign_stmnt(token.get_value());
         default: throw std::runtime_error("Token " + token.to_string() + " is not a valid start of a statement.");
     }
+}
+
+std::unique_ptr<Stmnt> Parser::parse_variable_assign_stmnt(const std::string& name) {
+    if (const Token assign = tokenizer.next(); assign.get_type() != TokenType::ASSIGN) {
+        throw std::runtime_error("Expected assignment got, " + assign.to_string());
+    }
+    return std::make_unique<VariableAssignStmnt>(name, parse_expr());
 }
 

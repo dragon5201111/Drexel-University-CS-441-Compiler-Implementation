@@ -28,7 +28,9 @@ class Tokenizer {
     std::optional<Token> cached;
 
     Token advance_current();
-    Token match(char current_char, std::string value, TokenType default_type);
+    Token get_number();
+    Token get_identifier();
+    Token match_operator(char current_char, std::string value, TokenType default_type);
 public:
     explicit Tokenizer(std::string input) {
         this->input = std::move(input);

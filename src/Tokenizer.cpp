@@ -49,44 +49,52 @@ Token Tokenizer::advance_current() {
         case '>': current++; return Token(TokenType::OPERATOR, ">");
 
         case '!':
-            return match('!', "!=", TokenType::OPERATOR);
+            return match_operator('!', "!=", TokenType::OPERATOR);
         case '=':
-            return match('=', "==", TokenType::ASSIGN);
+            return match_operator('=', "==", TokenType::ASSIGN);
 
         default:
             if (std::isdigit(current_char)) {
-                const int sub_start = current++;
-                while (current < input_size && std::isdigit(input[current])) {
-                    current++;
-                }
-                return Token(TokenType::NUMBER, input.substr(sub_start, current - sub_start));
+                return get_number();
             }
 
             if (std::isalpha(current_char)) {
-                const int sub_start = current++;
-                while (current < input_size && std::isalnum(input[current])) {
-                    current++;
-                }
-
-                const std::string fragment = input.substr(sub_start, current - sub_start);
-                if (fragment_map.count(fragment)) {
-                    return fragment_map.at(fragment);
-                }
-
-                return Token(TokenType::IDENTIFIER, fragment);
+                return get_identifier();
             }
 
             throw std::invalid_argument("Unsupported character: " + std::string(1, current_char));
     }
 }
 
-Token Tokenizer::match(const char current_char, std::string value, const TokenType default_type) {
+Token Tokenizer::match_operator(const char current_char, std::string value, const TokenType default_type) {
     if (current + 1 < input_size && input[current + 1] == '=') {
         current += 2;
         return Token(TokenType::OPERATOR, std::move(value));
     }
     current++;
     return Token(default_type, std::string(1, current_char));
+}
+
+Token Tokenizer::get_number() {
+    const int sub_start = current++;
+    while (current < input_size && std::isdigit(input[current])) {
+        current++;
+    }
+    return Token(TokenType::NUMBER, input.substr(sub_start, current - sub_start));
+}
+
+Token Tokenizer::get_identifier() {
+    const int sub_start = current++;
+    while (current < input_size && std::isalnum(input[current])) {
+        current++;
+    }
+
+    const std::string fragment = input.substr(sub_start, current - sub_start);
+    if (fragment_map.count(fragment)) {
+        return fragment_map.at(fragment);
+    }
+
+    return Token(TokenType::IDENTIFIER, fragment);
 }
 
 std::vector<Token> Tokenizer::collect() {
