@@ -167,8 +167,11 @@ std::unique_ptr<ClassDecl> Parser::parse_class_decl() {
 }
 
 std::vector<std::unique_ptr<MethodDecl>> Parser::parse_method_decls() {
-    std::cerr << "PARSING METHOD DECLARATIONS NOT IMPLEMENTED." << std::endl;
-    return {};
+    std::vector<std::unique_ptr<MethodDecl>> method_decls;
+    while (tokenizer.peek().get_type() != TokenType::RIGHT_BRACKET) {
+        method_decls.push_back(parse_method_decl());
+    }
+    return method_decls;
 }
 
 std::unique_ptr<MethodDecl> Parser::parse_method_decl() {

@@ -1,8 +1,11 @@
-method m(a1,a2,a3,a4,a5,a6) with locals q, r, s:
-    return x
-method m(a1,a2,a3,a4,a5,a6) with locals q, r, s:
-    x = 2
-    return x
-method mfoobar() with locals:
-    return 2
+class Foo [
+    fields
+    method doStuff(x,y,z) with locals r:
+        if (x < y): {
+            r = ((x + y) + z)
+        } else {
+            r = ((x + y) + z)
+        }
+        print(r)
+        return ((x + y) + z)
 ]

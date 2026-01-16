@@ -118,6 +118,7 @@ void AstPrinter::visit_class_decl(const ClassDecl &decl) {
         std::cout << field + ",";
     }
     for (auto& method : decl.methods) {
+        std::cout << " ";
         method->accept(*this);
     }
     std::cout << "]";

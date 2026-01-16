@@ -29,7 +29,7 @@ int main(const int argc, char* argv[]) {
     tokenizer.reset();
 
     Parser parser(tokenizer);
-    AstPrinter astPrinter;
-    auto c = parser.parse_method_decl();
-    c->accept(astPrinter);
+    AstPrinter ast_printer;
+    auto class_decl = parser.parse_class_decl();
+    class_decl->accept(ast_printer);
 }
