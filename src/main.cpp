@@ -2,10 +2,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "AstPrinter.h"
+#include "../include/AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
-#include "Stmnt.h"
 
 int main(const int argc, char* argv[]) {
     std::ifstream input("../test/source.441");

@@ -1,4 +1,4 @@
-#include "AstPrinter.h"
+#include "../include/AstPrinter.h"
 
 #include <iostream>
 

@@ -12,11 +12,13 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/Tokenizer.h
         src/Tokenizer.cpp
         include/Parser.h
-        include/expr.h
+        include/Expr.h
         src/Parser.cpp
         include/Stmnt.h
         include/AstPrinter.h
         src/AstPrinter.cpp
         include/Class.h
         include/Prog.h
-        include/Basic.h)
+        include/Basic.h
+        include/Control.h
+        include/IrStmnt.h)
