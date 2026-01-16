@@ -17,4 +17,5 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/Stmnt.h
         include/AstPrinter.h
         src/AstPrinter.cpp
-        include/Class.h)
+        include/Class.h
+        include/Prog.h)

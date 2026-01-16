@@ -1,5 +1,6 @@
 #include "Parser.h"
 #include <functional>
+#include <iostream>
 #include <stdexcept>
 
 std::unique_ptr<Expr> Parser::parse_expr() {
@@ -141,7 +142,7 @@ std::vector<std::unique_ptr<Stmnt>> Parser::parse_branch() {
     std::vector<std::unique_ptr<Stmnt>> branch = parse_stmts([this] {
         const Token token = tokenizer.peek();
         return token.get_type() != TokenType::RIGHT_BRACE;
-    });
+    },1);
 
     check_token_type(tokenizer.next(), TokenType::RIGHT_BRACE, "right brace");
     return branch;
@@ -201,7 +202,7 @@ std::unique_ptr<MethodDecl> Parser::parse_method_decl() {
     std::vector<std::unique_ptr<Stmnt>> stmnts = parse_stmts([this] {
         const Token token = tokenizer.peek();
         return token.get_type() != TokenType::RIGHT_BRACKET && token.get_type() != TokenType::METHOD;
-    });
+    }, 1);
 
     return std::make_unique<MethodDecl>(std::move(method_name.get_value()), std::move(params), std::move(locals), std::move(stmnts));
 }
@@ -239,17 +240,41 @@ std::vector<std::string> Parser::parse_identifiers(
 }
 
 std::vector<std::unique_ptr<Stmnt>> Parser::parse_stmts(
-     const std::function<bool()>& should_continue) {
+     const std::function<bool()>& should_continue, const uint32_t min_stmnts) {
     std::vector<std::unique_ptr<Stmnt>> stmnts;
     while (should_continue()) {
         stmnts.push_back(parse_stmt());
     }
 
-    if (stmnts.empty()) {
-        throw std::runtime_error("Expected at least one statement, got none.");
+    if (const auto num_stmnts = stmnts.size(); num_stmnts < min_stmnts) {
+        throw std::runtime_error("Expected at least " + std::to_string(min_stmnts) + " statements, got, " + std::to_string(num_stmnts));
     }
     return stmnts;
 }
+
+std::unique_ptr<ProgDecl> Parser::parse_prog_decl() {
+    std::vector<std::unique_ptr<ClassDecl>> class_decls;
+    while (tokenizer.peek().get_type() != TokenType::MAIN) {
+        class_decls.push_back(parse_class_decl());
+    }
+
+    check_token_type(tokenizer.next(), TokenType::MAIN, "main");
+    check_token_type(tokenizer.next(), TokenType::WITH, "with");
+
+    std::vector<std::string> locals = parse_identifiers([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::COLON;
+    }, "identifier");
+
+    check_token_type(tokenizer.next(), TokenType::COLON, "colon");
+    std::vector<std::unique_ptr<Stmnt>> body = parse_stmts([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::END_OF_FILE;
+    }, 0);
+
+    return std::make_unique<ProgDecl>(std::move(locals), std::move(class_decls), std::move(body));
+}
+
 
 // Helper method to avoid duplication across parser
 void Parser::check_token_type(const Token &token, const TokenType expected, const std::string& expected_message) {

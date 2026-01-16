@@ -30,6 +30,8 @@ int main(const int argc, char* argv[]) {
 
     Parser parser(tokenizer);
     AstPrinter ast_printer;
-    auto class_decl = parser.parse_class_decl();
-    class_decl->accept(ast_printer);
+
+    std::cout << "===PRINTING AST OF PROGRAM===" << std::endl;
+    parser.parse_prog_decl()->accept(ast_printer);
+    std::cout << std::endl << "===END AST OF PROGRAM===" << std::endl;
 }

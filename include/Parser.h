@@ -6,6 +6,7 @@
 #include "Expr.h"
 #include "Stmnt.h"
 #include "Class.h"
+#include "Prog.h"
 #include "Tokenizer.h"
 
 class Parser {
@@ -28,7 +29,7 @@ class Parser {
     std::vector<std::unique_ptr<MethodDecl>> parse_method_decls();
 
     std::vector<std::string> parse_identifiers(const std::function<bool()> &should_continue, const std::string &what);
-    std::vector<std::unique_ptr<Stmnt>> parse_stmts(const std::function<bool()> &should_continue);
+    std::vector<std::unique_ptr<Stmnt>> parse_stmts(const std::function<bool()> &should_continue, uint32_t min_stmnts);
 
     static void check_token_type(const Token& token, TokenType expected, const std::string& expected_message) ;
 public:
@@ -36,4 +37,5 @@ public:
     std::unique_ptr<Expr> parse_expr();
     std::unique_ptr<Stmnt> parse_stmt();
     std::unique_ptr<ClassDecl> parse_class_decl();
+    std::unique_ptr<ProgDecl> parse_prog_decl();
 };

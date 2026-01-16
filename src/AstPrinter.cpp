@@ -124,4 +124,17 @@ void AstPrinter::visit_class_decl(const ClassDecl &decl) {
     std::cout << "]";
 }
 
+void AstPrinter::visit_prog_decl(const ProgDecl &decl) {
+    for (auto& class_decl : decl.class_decls) {
+        class_decl->accept(*this);
+    }
+    std::cout << "main with ";
+    for (auto& local : decl.locals) {
+        std::cout << local + ",";
+    }
+    for (auto& stmnt : decl.body) {
+        stmnt->accept(*this);
+    }
+}
+
 
