@@ -27,6 +27,7 @@ class Parser {
     std::vector<std::unique_ptr<MethodDecl>> parse_method_decls();
 
     std::vector<std::string> parse_identifiers(const std::function<bool()> &should_continue, const std::string &what);
+    std::vector<std::unique_ptr<Stmnt>> parse_stmts(const std::function<bool()> &should_continue);
 
     static void check_token_type(const Token& token, TokenType expected, const std::string& expected_message) ;
 public:

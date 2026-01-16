@@ -1,19 +1,5 @@
-class foo [
-    fields
-]
-
-class foo [
-   fields x, y, z, y
-]
-
-class foo [
-   fields x, y
-]
-
-class NAME [
-  fields x, y, z, ....
-  method m(a, b, c, ...) with locals q, r, s, ...:
-    <one or more statements>
-  method m2(...) with locals ...:
-    <one or more statements>
-]
+if (x < 1):{
+    return (k + 1)
+}else{
+    return z
+}

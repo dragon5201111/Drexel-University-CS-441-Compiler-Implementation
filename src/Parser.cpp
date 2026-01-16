@@ -141,10 +141,10 @@ std::unique_ptr<Stmnt> Parser::parse_while_stmnt() {
 std::vector<std::unique_ptr<Stmnt>> Parser::parse_branch() {
     check_token_type(tokenizer.next(), TokenType::LEFT_BRACE, "left brace");
 
-    std::vector<std::unique_ptr<Stmnt>> branch;
-    while (tokenizer.peek().get_type() != TokenType::RIGHT_BRACE) {
-        branch.push_back(parse_stmt());
-    }
+    std::vector<std::unique_ptr<Stmnt>> branch = parse_stmts([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::RIGHT_BRACE;
+    });
 
     check_token_type(tokenizer.next(), TokenType::RIGHT_BRACE, "right brace");
     return branch;
@@ -199,6 +199,15 @@ std::vector<std::string> Parser::parse_identifiers(
     }
 
     return identifiers;
+}
+
+std::vector<std::unique_ptr<Stmnt>> Parser::parse_stmts(
+     const std::function<bool()>& should_continue) {
+    std::vector<std::unique_ptr<Stmnt>> stmnts;
+    while (should_continue()) {
+        stmnts.push_back(parse_stmt());
+    }
+    return stmnts;
 }
 
 // Helper method to avoid duplication across parser
