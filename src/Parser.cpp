@@ -183,6 +183,10 @@ std::unique_ptr<MethodDecl> Parser::parse_method_decl() {
         return token.get_type() != TokenType::RIGHT_PAREN;
     }, "identifier");
 
+    if (params.size() > MethodDecl::PARAM_MAX) {
+        throw std::invalid_argument("Too many arguments, must be in the range 0-6");
+    }
+
     check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
     check_token_type(tokenizer.next(), TokenType::WITH, "with");
     check_token_type(tokenizer.next(), TokenType::LOCALS, "locals");
@@ -196,7 +200,7 @@ std::unique_ptr<MethodDecl> Parser::parse_method_decl() {
 
     std::vector<std::unique_ptr<Stmnt>> stmnts = parse_stmts([this] {
         const Token token = tokenizer.peek();
-        return token.get_type() != TokenType::RIGHT_BRACE && token.get_type() != TokenType::METHOD;
+        return token.get_type() != TokenType::RIGHT_BRACKET && token.get_type() != TokenType::METHOD;
     });
 
     return std::make_unique<MethodDecl>(std::move(method_name.get_value()), std::move(params), std::move(locals), std::move(stmnts));

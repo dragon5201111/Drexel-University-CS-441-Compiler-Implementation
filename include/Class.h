@@ -22,6 +22,7 @@ public:
 
 class MethodDecl final : public Decl {
 public:
+    static constexpr int PARAM_MAX = 6;
     std::string name;
     std::vector<std::string> params;
     std::vector<std::string> locals;
