@@ -171,7 +171,7 @@ std::vector<std::string> Parser::parse_field_decls() {
         [this] {
             const Token token = tokenizer.peek();
             return token.get_type() != TokenType::METHOD
-                && token.get_type() != TokenType::RIGHT_BRACKET;
+                || token.get_type() != TokenType::RIGHT_BRACKET;
         },
         "field name"
     );
@@ -193,9 +193,11 @@ std::vector<std::string> Parser::parse_identifiers(
         check_token_type(token, TokenType::IDENTIFIER, what);
         identifiers.push_back(token.get_value());
 
-        if (tokenizer.peek().get_type() == TokenType::COMMA) {
-            tokenizer.next();
+        if (tokenizer.peek().get_type() != TokenType::COMMA) {
+            break;
         }
+
+        tokenizer.next();
     }
 
     return identifiers;

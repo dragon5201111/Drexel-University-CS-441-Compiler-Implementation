@@ -95,3 +95,32 @@ void AstPrinter::visit_field_update_stmnt(const FieldUpdateStmnt &stmnt) {
     std::cout << "." + stmnt.field_name + "=";
     stmnt.value->accept(*this);
 }
+
+void AstPrinter::visit_method_decl(const MethodDecl &decl) {
+    std::cout << "method " + decl.name + "(";
+    for (auto& param : decl.params) {
+        std::cout << param + ",";
+    }
+    std::cout << ") with locals";
+    for (auto& local : decl.locals) {
+        std::cout << local + ",";
+    }
+    std::cout << ":";
+    for (auto& stmnt : decl.body) {
+        stmnt->accept(*this);
+    }
+}
+
+void AstPrinter::visit_class_decl(const ClassDecl &decl) {
+    std::cout << "class " + decl.name + "[";
+    std::cout << "fields ";
+    for (auto& field : decl.fields) {
+        std::cout << field + ",";
+    }
+    for (auto& method : decl.methods) {
+        method->accept(*this);
+    }
+    std::cout << "]";
+}
+
+

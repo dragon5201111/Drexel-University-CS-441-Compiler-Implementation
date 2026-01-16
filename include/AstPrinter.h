@@ -1,8 +1,12 @@
 #pragma once
+#include "Class.h"
 #include "Expr.h"
 #include "Stmnt.h"
 
-class AstPrinter : public ExprVisitor, public StmntVisitor {
+class AstPrinter final :
+    public ExprVisitor,
+    public StmntVisitor,
+    public ClassVisitor{
 public:
     // Expression methods
     void visit_binary_expr(const BinaryExpr &expr) override;
@@ -22,4 +26,8 @@ public:
     void visit_return_stmnt(const ReturnStmnt &stmnt) override;
     void visit_print_stmnt(const PrintStmnt &stmnt) override;
     void visit_field_update_stmnt(const FieldUpdateStmnt &stmnt) override;
+
+    // Class Methods
+    void visit_method_decl(const MethodDecl &decl) override;
+    void visit_class_decl(const ClassDecl &decl) override;
 };

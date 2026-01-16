@@ -30,6 +30,6 @@ int main(const int argc, char* argv[]) {
 
     Parser parser(tokenizer);
     AstPrinter astPrinter;
-    auto c = parser.parse_stmt();
+    auto c = parser.parse_class_decl();
     c->accept(astPrinter);
 }
