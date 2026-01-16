@@ -1,6 +1,5 @@
 #include "Parser.h"
 #include <functional>
-#include <iostream>
 #include <stdexcept>
 
 std::unique_ptr<Expr> Parser::parse_expr() {

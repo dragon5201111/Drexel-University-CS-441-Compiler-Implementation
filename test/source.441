@@ -1,14 +1,7 @@
-class Foo [
-    fields
-    method doStuff(x,y,z) with locals r:
-        if (x < y): {
-            r = ((x + y) + z)
-        } else {
-            r = ((x + y) + z)
-        }
-        print(r)
-        return ((x + y) + z)
-]
-main with:
-    x = @Foo
-    print(^x.doStuff(2,3,4))
+main with x, y, z:
+    x = (4 + 5)
+    x = 73
+    y = (4 + 5)
+    print(y)
+    z = (4 + 5)
+    print(z)
