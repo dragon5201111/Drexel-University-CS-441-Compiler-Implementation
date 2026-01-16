@@ -35,6 +35,7 @@ public:
             case TokenType::METHOD: string_rep = "METHOD"; break;
             case TokenType::LOCALS: string_rep = "LOCALS"; break;
             case TokenType::FIELDS: string_rep = "FIELDS"; break;
+            case TokenType::MAIN: string_rep = "MAIN"; break;
             case TokenType::THIS: string_rep = "THIS"; break;
             case TokenType::IF: string_rep = "IF"; break;
             case TokenType::IF_ONLY: string_rep = "IF_ONLY"; break;

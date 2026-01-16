@@ -1,11 +1,14 @@
-class Foo [
+class Stacker [
     fields
-    method doStuff(x,y,z) with locals r:
-        if (x < y): {
-            r = ((x + y) + z)
-        } else {
-            r = ((x + y) + z)
+    method do(stk) with locals x, v:
+        x = 20
+        while (x > 0): {
+            _ = ^stk.push(x)
+            x = (x - 1)
         }
-        print(r)
-        return ((x + y) + z)
+        v = ^stk.pop()
+        while (v != 0): {
+            print(v)
+            v = ^stk.pop()
+        }
 ]

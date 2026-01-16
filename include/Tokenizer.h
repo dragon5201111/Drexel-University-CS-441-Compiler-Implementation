@@ -19,7 +19,8 @@ class Tokenizer {
         {"with", Token(TokenType::WITH)},
         {"method", Token(TokenType::METHOD)},
         {"locals", Token(TokenType::LOCALS)},
-        {"fields", Token(TokenType::FIELDS)}
+        {"fields", Token(TokenType::FIELDS)},
+        {"main", Token(TokenType::MAIN)},
     };
 
     std::string input;

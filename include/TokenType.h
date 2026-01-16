@@ -29,6 +29,7 @@ enum class TokenType {
     METHOD,
     LOCALS,
     FIELDS,
+    MAIN,
 
     ASSIGN,
     OPERATOR,
