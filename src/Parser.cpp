@@ -166,26 +166,58 @@ std::unique_ptr<ClassDecl> Parser::parse_class_decl() {
     return std::make_unique<ClassDecl>(std::move(class_name.get_value()), std::move(fields), std::move(methods));
 }
 
-std::vector<std::string> Parser::parse_field_decls() {
-    return parse_identifiers(
-        [this] {
-            const Token token = tokenizer.peek();
-            return token.get_type() != TokenType::METHOD
-                || token.get_type() != TokenType::RIGHT_BRACKET;
-        },
-        "field name"
-    );
-}
-
 std::vector<std::unique_ptr<MethodDecl>> Parser::parse_method_decls() {
     std::cerr << "PARSING METHOD DECLARATIONS NOT IMPLEMENTED." << std::endl;
     return {};
 }
 
+std::unique_ptr<MethodDecl> Parser::parse_method_decl() {
+    check_token_type(tokenizer.next(), TokenType::METHOD, "method");
+
+    const Token method_name = tokenizer.next();
+    check_token_type(method_name, TokenType::IDENTIFIER, "identifier");
+
+    check_token_type(tokenizer.next(), TokenType::LEFT_PAREN, "left parenthesis");
+    std::vector<std::string> params = parse_identifiers([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::RIGHT_PAREN;
+    }, "identifier");
+
+    check_token_type(tokenizer.next(), TokenType::RIGHT_PAREN, "right parenthesis");
+    check_token_type(tokenizer.next(), TokenType::WITH, "with");
+    check_token_type(tokenizer.next(), TokenType::LOCALS, "locals");
+
+    std::vector<std::string> locals = parse_identifiers([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::COLON;
+    }, "identifier");
+
+    check_token_type(tokenizer.next(), TokenType::COLON, "colon");
+
+    std::vector<std::unique_ptr<Stmnt>> stmnts = parse_stmts([this] {
+        const Token token = tokenizer.peek();
+        return token.get_type() != TokenType::RIGHT_BRACE && token.get_type() != TokenType::METHOD;
+    });
+
+    return std::make_unique<MethodDecl>(std::move(method_name.get_value()), std::move(params), std::move(locals), std::move(stmnts));
+}
+
+std::vector<std::string> Parser::parse_field_decls() {
+    return parse_identifiers(
+        [this] {
+            const Token token = tokenizer.peek();
+            return token.get_type() != TokenType::METHOD
+                && token.get_type() != TokenType::RIGHT_BRACKET;
+        },
+        "field name"
+    );
+}
+
 // Helper method to aid with parsing method declarations
 std::vector<std::string> Parser::parse_identifiers(
     const std::function<bool()>& should_continue,
-    const std::string& what) {
+    const std::string& what)
+{
     std::vector<std::string> identifiers;
 
     while (should_continue()) {
@@ -193,11 +225,10 @@ std::vector<std::string> Parser::parse_identifiers(
         check_token_type(token, TokenType::IDENTIFIER, what);
         identifiers.push_back(token.get_value());
 
-        if (tokenizer.peek().get_type() != TokenType::COMMA) {
-            break;
+        if (tokenizer.peek().get_type() == TokenType::COMMA) {
+            tokenizer.next();
+            check_token_type(tokenizer.peek(), TokenType::IDENTIFIER, "identifier");
         }
-
-        tokenizer.next();
     }
 
     return identifiers;
@@ -208,6 +239,10 @@ std::vector<std::unique_ptr<Stmnt>> Parser::parse_stmts(
     std::vector<std::unique_ptr<Stmnt>> stmnts;
     while (should_continue()) {
         stmnts.push_back(parse_stmt());
+    }
+
+    if (stmnts.empty()) {
+        throw std::runtime_error("Expected at least one statement, got none.");
     }
     return stmnts;
 }

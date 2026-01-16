@@ -101,11 +101,11 @@ void AstPrinter::visit_method_decl(const MethodDecl &decl) {
     for (auto& param : decl.params) {
         std::cout << param + ",";
     }
-    std::cout << ") with locals";
+    std::cout << ") with locals ";
     for (auto& local : decl.locals) {
         std::cout << local + ",";
     }
-    std::cout << ":";
+    std::cout << ": ";
     for (auto& stmnt : decl.body) {
         stmnt->accept(*this);
     }

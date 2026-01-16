@@ -24,6 +24,7 @@ class Parser {
     std::vector<std::unique_ptr<Stmnt>> parse_branch();
 
     std::vector<std::string> parse_field_decls();
+    // parse method decl goes here
     std::vector<std::unique_ptr<MethodDecl>> parse_method_decls();
 
     std::vector<std::string> parse_identifiers(const std::function<bool()> &should_continue, const std::string &what);
@@ -35,4 +36,6 @@ public:
     std::unique_ptr<Expr> parse_expr();
     std::unique_ptr<Stmnt> parse_stmt();
     std::unique_ptr<ClassDecl> parse_class_decl();
+
+    std::unique_ptr<MethodDecl> parse_method_decl();
 };
