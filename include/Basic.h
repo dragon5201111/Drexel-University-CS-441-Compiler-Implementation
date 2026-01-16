@@ -1,5 +1,6 @@
 #pragma once
 
-class Basic {
+class BasicBlock{
 public:
+
 };
