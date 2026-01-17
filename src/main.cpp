@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "IrControl.h"
 #include "../include/AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
