@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+
+#include "Print.h"
 #include "TokenType.h"
 
-class Token{
+class Token : public Printable {
     TokenType type;
     std::string value;
 public:
@@ -13,7 +15,7 @@ public:
     [[nodiscard]] std::string get_value() const { return value; }
     [[nodiscard]] TokenType get_type() const { return type; }
 
-    [[nodiscard]] std::string to_string() const {
+    [[nodiscard]] std::string to_string() const override {
         std::string string_rep;
         switch (type) {
             case TokenType::LEFT_PAREN: string_rep = "LEFT_PAREN"; break;
