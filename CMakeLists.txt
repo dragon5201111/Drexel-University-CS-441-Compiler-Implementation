@@ -22,4 +22,5 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/Basic.h
         include/IrControl.h
         include/IrStmnt.h
-        include/Print.h)
+        include/Print.h
+        include/IrValue.h)
