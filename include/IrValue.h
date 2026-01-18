@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
+#include <memory>
 #include <string>
+#include <vector>
+
 #include "Print.h"
 
 class IrValue : public Printable {
@@ -19,6 +22,16 @@ public:
     }
 };
 
+class IrName : public IrValue {
+public:
+    std::string name;
+    explicit IrName(std::string name) : name(std::move(name)) {}
+
+    [[nodiscard]] std::string to_string() const override {
+        return name;
+    }
+};
+
 class IrConstant : public IrValue {
 public:
     uint32_t value;
@@ -26,5 +39,26 @@ public:
 
     [[nodiscard]] std::string to_string() const override {
         return std::to_string(value);
+    }
+};
+
+class IrGlobalData : public Printable {
+public:
+    std::string name;
+    std::vector<std::unique_ptr<IrValue>> values;
+
+    explicit IrGlobalData(std::string name) : name(std::move(name)) {}
+
+    [[nodiscard]] std::string to_string() const override {
+        std::string body = "global array " + name + ": { ";
+        const auto num_values = values.size();
+        for (auto i = 0; i < num_values; i++) {
+            if (i > 0) {
+                body += ", ";
+            }
+
+            body += values[i]->to_string();
+        }
+        return body + " }";
     }
 };

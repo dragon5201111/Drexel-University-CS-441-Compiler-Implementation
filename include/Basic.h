@@ -8,7 +8,7 @@
 
 class BasicBlock : public Printable{
 public:
-    std::string name;
+    std::unique_ptr<IrName> name;
     std::vector<std::unique_ptr<IrStmnt>> primitives;
     std::unique_ptr<IrControlTransfer> control;
 

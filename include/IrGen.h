@@ -1,19 +1,19 @@
 #pragma once
-#include "Class.h"
-#include "Expr.h"
+#include "IrValue.h"
 #include "Prog.h"
-#include "Stmnt.h"
 #include "Writer.h"
 
-class AstPrinter final :
+class IrGenVisitor final :
     public ExprVisitor,
     public StmntVisitor,
     public ClassVisitor,
-    public ProgVisitor{
+    public ProgVisitor {
 
+    std::vector<std::unique_ptr<IrGlobalData>> global_data;
     std::shared_ptr<Writer> writer;
 public:
-    explicit AstPrinter(const std::shared_ptr<Writer>& writer) : writer(writer) {};
+    explicit IrGenVisitor(const std::shared_ptr<Writer>& writer) : writer(writer) {}
+
     // Expression methods
     void visit_binary_expr(const BinaryExpr &expr) override;
     void visit_field_read_expr(const FieldReadExpr &expr) override;
@@ -28,7 +28,6 @@ public:
     void visit_discard_stmnt(const DiscardStmnt &stmnt) override;
     void visit_if_stmnt(const IfStmnt &stmnt) override;
     void visit_while_stmnt(const WhileStmnt &stmnt) override;
-    void print_stmnts(const std::vector<std::unique_ptr<Stmnt>>& stmnts);
     void visit_return_stmnt(const ReturnStmnt &stmnt) override;
     void visit_print_stmnt(const PrintStmnt &stmnt) override;
     void visit_field_update_stmnt(const FieldUpdateStmnt &stmnt) override;
@@ -39,4 +38,7 @@ public:
 
     //Program Method
     void visit_prog_decl(const ProgDecl &decl) override;
+
+    // Write the IR to writer -- Must be visited by a program declaration beforehand
+    void write_ir() const;
 };

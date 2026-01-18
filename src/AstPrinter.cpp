@@ -4,133 +4,133 @@
 
 void AstPrinter::visit_binary_expr(const BinaryExpr &expr) {
     expr.lhs->accept(*this);
-    std::cout << expr.op;
+    writer->write(expr.op);
     expr.rhs->accept(*this);
 }
 
 void AstPrinter::visit_field_read_expr(const FieldReadExpr &expr) {
-    std::cout << "&";
+    writer->write("&");
     expr.base->accept(*this);
-    std::cout << "." + expr.field_name;
+    writer->write("." + expr.field_name);
 }
 
 void AstPrinter::visit_variable_expr(const VariableExpr &expr) {
-    std::cout << expr.name;
+    writer->write(expr.name);
 }
 
 void AstPrinter::visit_method_call_expr(const MethodCallExpr &expr) {
-    std::cout << "^";
+    writer->write("^");
     expr.base->accept(*this);
-    std::cout << "." + expr.method_name + "(";
+    writer->write("." + expr.method_name + "(");
     for (auto& arg : expr.args) {
         arg->accept(*this);
-        std::cout << ",";
+        writer->write(",");
     }
-    std::cout << ")";
+    writer->write(")");
 }
 
 void AstPrinter::visit_this_expr(const ThisExpr &expr) {
-    std::cout << "this";
+    writer->write("this");
 }
 
 void AstPrinter::visit_class_ref_expr(const ClassRefExpr &expr) {
-    std::cout << "@" + expr.class_name;
+    writer->write("@" + expr.class_name);
 }
 
 void AstPrinter::visit_constant_expr(const ConstantExpr &expr) {
-    std::cout << expr.value;
+    writer->write(std::to_string(expr.value));
 }
 
 void AstPrinter::visit_variable_assign_stmnt(const VariableAssignStmnt &stmnt) {
-    std::cout << stmnt.name + "=";
+    writer->write(stmnt.name + "=");
     stmnt.initializer->accept(*this);
 }
 
 void AstPrinter::visit_discard_stmnt(const DiscardStmnt &stmnt) {
-    std::cout << "_ = ";
+    writer->write("_ = ");
     stmnt.expr->accept(*this);
 }
 
 void AstPrinter::visit_if_stmnt(const IfStmnt &stmnt) {
-    std::cout << std::endl;
-    std::cout << "if ";
+    writer->write("\n");
+    writer->write("if ");
     stmnt.condition->accept(*this);
-    std::cout << ": {";
+    writer->write(": {");
     print_stmnts(stmnt.then_branch);
-    std::cout << "} else {";
+    writer->write("} else {");
     print_stmnts(stmnt.else_branch);
-    std::cout << "}";
+    writer->write("}");
 }
 
 void AstPrinter::visit_while_stmnt(const WhileStmnt &stmnt) {
-    std::cout << std::endl;
-    std::cout << "while ";
+    writer->write("\n");
+    writer->write("while ");
     stmnt.condition->accept(*this);
-    std::cout << ": {";
+    writer->write(": {");
     print_stmnts(stmnt.body);
-    std::cout << "}";
+    writer->write("}");
 }
 
 void AstPrinter::print_stmnts(const std::vector<std::unique_ptr<Stmnt>>& stmnts) {
     for (const auto& stmnt : stmnts) {
         stmnt->accept(*this);
-        std::cout << ",";
+        writer->write(",");
     }
 }
 
 void AstPrinter::visit_return_stmnt(const ReturnStmnt &stmnt) {
-    std::cout << "return ";
+    writer->write("return ");
     stmnt.expr->accept(*this);
 }
 
 void AstPrinter::visit_print_stmnt(const PrintStmnt &stmnt) {
-    std::cout << "print(";
+    writer->write("print(");
     stmnt.expr->accept(*this);
-    std::cout << ")";
+    writer->write(")");
 }
 
 void AstPrinter::visit_field_update_stmnt(const FieldUpdateStmnt &stmnt) {
-    std::cout << "!";
+    writer->write("!");
     stmnt.base->accept(*this);
-    std::cout << "." + stmnt.field_name + "=";
+    writer->write("." + stmnt.field_name + "=");
     stmnt.value->accept(*this);
 }
 
 void AstPrinter::visit_method_decl(const MethodDecl &decl) {
-    std::cout << "method " + decl.name + "(";
+    writer->write("method " + decl.name + "(");
     for (auto& param : decl.params) {
-        std::cout << param + ",";
+        writer->write(param + ",");
     }
-    std::cout << ") with locals ";
+    writer->write(") with locals ");
     for (auto& local : decl.locals) {
-        std::cout << local + ",";
+        writer->write(local + ",");
     }
-    std::cout << ": ";
+    writer->write(": ");
     for (auto& stmnt : decl.body) {
         stmnt->accept(*this);
     }
 }
 
 void AstPrinter::visit_class_decl(const ClassDecl &decl) {
-    std::cout << "class " + decl.name + "[";
-    std::cout << "fields ";
+    writer->write("class " + decl.name + "[");
+    writer->write("fields ");
     for (auto& field : decl.fields) {
-        std::cout << field + ",";
+        writer->write(field + ",");
     }
     for (auto& method : decl.methods) {
-        std::cout << " ";
+        writer->write(" ");
         method->accept(*this);
     }
-    std::cout << "]";
+    writer->write("]");
 }
 
 void AstPrinter::visit_prog_decl(const ProgDecl &decl) {
     for (auto& class_decl : decl.class_decls) {
         class_decl->accept(*this);
     }
-    std::cout << "main with ";
+    writer->write("main with ");
     for (auto& local : decl.locals) {
-        std::cout << local + ",";
+        writer->write(local + ",");
     }
     for (auto& stmnt : decl.body) {
         stmnt->accept(*this);

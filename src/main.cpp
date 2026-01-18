@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "IrControl.h"
+#include "IrGen.h"
 #include "../include/AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
@@ -29,9 +29,17 @@ int main(const int argc, char* argv[]) {
     tokenizer.reset();
 
     Parser parser(tokenizer);
-    AstPrinter ast_printer;
+    std::shared_ptr<Writer> writer = std::make_shared<ConsoleWriter>();
+    AstPrinter ast_printer(writer);
 
     std::cout << "===PRINTING AST OF PROGRAM===" << std::endl;
-    parser.parse_prog_decl()->accept(ast_printer);
+    auto prog_decl = parser.parse_prog_decl();
+    prog_decl->accept(ast_printer);
     std::cout << std::endl << "===END AST OF PROGRAM===" << std::endl;
+
+    std::cout << "===PRINTING IR===" << std::endl;
+    IrGenVisitor ir_gen_visitor(writer);
+    prog_decl->accept(ir_gen_visitor);
+    ir_gen_visitor.write_ir();
+    std::cout << "===END OF IR===" << std::endl;
 }
