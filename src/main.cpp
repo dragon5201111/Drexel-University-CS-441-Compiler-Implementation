@@ -40,6 +40,6 @@ int main(const int argc, char* argv[]) {
     std::cout << "===PRINTING IR===" << std::endl;
     IrGenVisitor ir_gen_visitor(writer);
     prog_decl->accept(ir_gen_visitor);
-    ir_gen_visitor.write_ir();
+    ir_gen_visitor.write();
     std::cout << "===END OF IR===" << std::endl;
 }

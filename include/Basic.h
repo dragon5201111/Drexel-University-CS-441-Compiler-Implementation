@@ -8,13 +8,13 @@
 
 class BasicBlock final : public Printable {
 public:
-    std::shared_ptr<IrLabel> label;
+    std::shared_ptr<IrName> label;
     std::vector<std::shared_ptr<IrVariable>> args;
     std::vector<std::unique_ptr<IrStmnt>> primitives;
     std::unique_ptr<IrControlTransfer> control;
 
     explicit BasicBlock(
-        std::shared_ptr<IrLabel> label,
+        std::shared_ptr<IrName> label,
         std::vector<std::unique_ptr<IrStmnt>> &&primitives,
         std::unique_ptr<IrControlTransfer> control,
         std::vector<std::shared_ptr<IrVariable>> args = {}

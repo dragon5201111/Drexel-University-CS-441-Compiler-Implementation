@@ -22,10 +22,10 @@ public:
     }
 };
 
-class IrLabel final: public IrValue {
+class IrName final: public IrValue {
 public:
     std::string name;
-    explicit IrLabel(std::string name) : name(std::move(name)) {}
+    explicit IrName(std::string name) : name(std::move(name)) {}
 
     [[nodiscard]] std::string to_string() const override {
         return name;
@@ -45,9 +45,11 @@ public:
 class IrGlobalData final: public IrValue {
 public:
     std::string name;
-    std::vector<std::unique_ptr<IrValue>> values;
+    std::vector<std::shared_ptr<IrValue>> values;
 
-    explicit IrGlobalData(std::string name) : name(std::move(name)) {}
+    explicit IrGlobalData(std::string name,
+                          const std::vector<std::shared_ptr<IrValue>>& values)
+        : name(std::move(name)), values(values) {}
 
     [[nodiscard]] std::string to_string() const override {
         std::string body = "global array " + name + ": { ";

@@ -68,6 +68,6 @@ void IrGenVisitor::visit_prog_decl(const ProgDecl &decl) {
 
 }
 
-void IrGenVisitor::write_ir() const {
+void IrGenVisitor::write() const {
 
 }

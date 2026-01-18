@@ -1,5 +1,4 @@
 #pragma once
-#include "IrValue.h"
 #include "Prog.h"
 #include "Writer.h"
 
@@ -38,6 +37,5 @@ public:
     //Program Method
     void visit_prog_decl(const ProgDecl &decl) override;
 
-    // Write the IR to writer -- Must be visited by a program declaration beforehand
-    void write_ir() const;
+    void write() const;
 };
