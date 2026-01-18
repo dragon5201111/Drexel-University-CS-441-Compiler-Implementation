@@ -9,6 +9,8 @@ class IrValue : public Printable {
 public:
     ~IrValue() override = default;
     [[nodiscard]] std::string to_string() const override = 0;
+    // For IrValues that can be represented in two ways
+    [[nodiscard]] virtual std::string as_value() const { return to_string(); }
 };
 
 class IrVariable final: public IrValue {
@@ -41,7 +43,7 @@ public:
     }
 };
 
-class IrGlobalData final: public Printable {
+class IrGlobalData final: public IrValue {
 public:
     std::string name;
     std::vector<std::unique_ptr<IrValue>> values;
@@ -59,5 +61,9 @@ public:
             body += values[i]->to_string();
         }
         return body + " }";
+    }
+
+    [[nodiscard]] std::string as_value() const override {
+        return "@" + name;
     }
 };
