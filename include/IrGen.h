@@ -9,7 +9,6 @@ class IrGenVisitor final :
     public ClassVisitor,
     public ProgVisitor {
 
-    std::vector<std::unique_ptr<IrGlobalData>> global_data;
     std::shared_ptr<Writer> writer;
 public:
     explicit IrGenVisitor(const std::shared_ptr<Writer>& writer) : writer(writer) {}

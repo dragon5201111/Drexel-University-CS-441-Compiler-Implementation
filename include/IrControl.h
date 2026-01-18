@@ -13,7 +13,7 @@ public:
     [[nodiscard]] std::string to_string() const override = 0;
 };
 
-class IrJumpTransfer final : public IrControlTransfer {
+class IrJumpTransfer final: public IrControlTransfer {
 public:
     std::shared_ptr<IrLabel> target;
     explicit IrJumpTransfer(const std::shared_ptr<IrLabel>& target) : target(target) {}
@@ -27,7 +27,7 @@ public:
     }
 };
 
-class IrCondTransfer final : public IrControlTransfer {
+class IrCondTransfer final: public IrControlTransfer {
 public:
     std::shared_ptr<IrVariable> var;
     std::shared_ptr<IrLabel> then_block;
@@ -45,7 +45,7 @@ public:
     }
 };
 
-class IrReturnTransfer final : public IrControlTransfer {
+class IrReturnTransfer final: public IrControlTransfer {
 public:
     std::shared_ptr<IrValue> value;
     explicit IrReturnTransfer(const std::shared_ptr<IrValue>& value) : value(value) {}
@@ -65,31 +65,31 @@ public:
     [[nodiscard]] std::string to_string() const override = 0;
 };
 
-class IrFailReasonNotAPointer : public IrFailReason {
+class IrFailReasonNotAPointer final: public IrFailReason {
     [[nodiscard]] std::string to_string() const override {
         return "NotAPointer";
     }
 };
 
-class IrFailReasonNotANumber : public IrFailReason {
+class IrFailReasonNotANumber final: public IrFailReason {
     [[nodiscard]] std::string to_string() const override {
         return "NotANumber";
     }
 };
 
-class IrFailReasonNoSuchField : public IrFailReason {
+class IrFailReasonNoSuchField final: public IrFailReason {
     [[nodiscard]] std::string to_string() const override {
         return "NoSuchField";
     }
 };
 
-class IrFailReasonNoSuchMethod : public IrFailReason {
+class IrFailReasonNoSuchMethod final: public IrFailReason {
     [[nodiscard]] std::string to_string() const override {
         return "NoSuchMethod";
     }
 };
 
-class IrFailTransfer final : public IrControlTransfer {
+class IrFailTransfer final: public IrControlTransfer {
 public:
     std::unique_ptr<IrFailReason> reason;
     explicit IrFailTransfer(std::unique_ptr<IrFailReason> reason) : reason(std::move(reason)) {}

@@ -6,7 +6,7 @@
 #include "IrStmnt.h"
 #include "IrControl.h"
 
-class BasicBlock : public Printable{
+class BasicBlock final: public Printable{
 public:
     std::shared_ptr<IrLabel> label;
     std::vector<std::unique_ptr<IrStmnt>> primitives;

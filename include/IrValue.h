@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -12,7 +11,7 @@ public:
     [[nodiscard]] std::string to_string() const override = 0;
 };
 
-class IrVariable : public IrValue {
+class IrVariable final: public IrValue {
 public:
     std::string name;
     explicit IrVariable(std::string name) : name(std::move(name)) {}
@@ -22,7 +21,7 @@ public:
     }
 };
 
-class IrLabel : public IrValue {
+class IrLabel final: public IrValue {
 public:
     std::string name;
     explicit IrLabel(std::string name) : name(std::move(name)) {}
@@ -32,7 +31,7 @@ public:
     }
 };
 
-class IrConstant : public IrValue {
+class IrConstant final: public IrValue {
 public:
     uint32_t value;
     explicit IrConstant(const uint32_t value) : value(value) {}
@@ -42,7 +41,7 @@ public:
     }
 };
 
-class IrGlobalData : public Printable {
+class IrGlobalData final: public Printable {
 public:
     std::string name;
     std::vector<std::unique_ptr<IrValue>> values;
