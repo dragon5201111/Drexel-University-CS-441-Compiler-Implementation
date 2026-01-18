@@ -9,16 +9,16 @@
 class IrControlTransfer : public Printable {
 public:
     ~IrControlTransfer() override = default;
-    [[nodiscard]] virtual std::vector<std::shared_ptr<IrName>> successors() const = 0;
+    [[nodiscard]] virtual std::vector<std::shared_ptr<IrLabel>> successors() const = 0;
     [[nodiscard]] std::string to_string() const override = 0;
 };
 
 class IrJumpTransfer final : public IrControlTransfer {
 public:
-    std::shared_ptr<IrName> target;
-    explicit IrJumpTransfer(std::shared_ptr<IrName> target) : target(std::move(target)) {}
+    std::shared_ptr<IrLabel> target;
+    explicit IrJumpTransfer(const std::shared_ptr<IrLabel>& target) : target(target) {}
 
-   [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
+   [[nodiscard]] std::vector<std::shared_ptr<IrLabel>> successors() const override {
         return {target};
     }
 
@@ -29,14 +29,14 @@ public:
 
 class IrCondTransfer final : public IrControlTransfer {
 public:
-    std::unique_ptr<IrVariable> var;
-    std::shared_ptr<IrName> then_block;
-    std::shared_ptr<IrName> else_block;
+    std::shared_ptr<IrVariable> var;
+    std::shared_ptr<IrLabel> then_block;
+    std::shared_ptr<IrLabel> else_block;
 
-    explicit IrCondTransfer(std::unique_ptr<IrVariable> var, std::shared_ptr<IrName> then_block, std::shared_ptr<IrName> else_block)
-        : var(std::move(var)), then_block(std::move(then_block)), else_block(std::move(else_block)) {}
+    explicit IrCondTransfer(const std::shared_ptr<IrVariable>& var, const std::shared_ptr<IrLabel>& then_block, const std::shared_ptr<IrLabel>& else_block)
+        : var(var), then_block(then_block), else_block(else_block) {}
 
-    [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
+    [[nodiscard]] std::vector<std::shared_ptr<IrLabel>> successors() const override {
         return {then_block, else_block};
     }
 
@@ -47,10 +47,10 @@ public:
 
 class IrReturnTransfer final : public IrControlTransfer {
 public:
-    std::unique_ptr<IrValue> value;
-    explicit IrReturnTransfer(std::unique_ptr<IrValue> value) : value(std::move(value)) {}
+    std::shared_ptr<IrValue> value;
+    explicit IrReturnTransfer(const std::shared_ptr<IrValue>& value) : value(value) {}
 
-    [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
+    [[nodiscard]] std::vector<std::shared_ptr<IrLabel>> successors() const override {
         return {};
     }
 
@@ -94,7 +94,7 @@ public:
     std::unique_ptr<IrFailReason> reason;
     explicit IrFailTransfer(std::unique_ptr<IrFailReason> reason) : reason(std::move(reason)) {}
 
-    [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
+    [[nodiscard]] std::vector<std::shared_ptr<IrLabel>> successors() const override {
         return {};
     }
 

@@ -22,10 +22,10 @@ public:
     }
 };
 
-class IrName : public IrValue {
+class IrLabel : public IrValue {
 public:
     std::string name;
-    explicit IrName(std::string name) : name(std::move(name)) {}
+    explicit IrLabel(std::string name) : name(std::move(name)) {}
 
     [[nodiscard]] std::string to_string() const override {
         return name;

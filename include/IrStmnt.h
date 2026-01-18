@@ -11,11 +11,11 @@ public:
 
 class IrAssignStmnt final: public IrStmnt {
 public:
-    std::unique_ptr<IrVariable> dest;
-    std::unique_ptr<IrValue> src;
+    std::shared_ptr<IrVariable> dest;
+    std::shared_ptr<IrValue> src;
 
-    explicit IrAssignStmnt(std::unique_ptr<IrVariable> dest, std::unique_ptr<IrValue> src)
-        : dest(std::move(dest)), src(std::move(src)) {}
+    explicit IrAssignStmnt(const std::shared_ptr<IrVariable>& dest, const std::shared_ptr<IrValue>& src)
+        : dest(dest), src(src) {}
 
     [[nodiscard]] std::string to_string() const override {
         return dest->to_string() + " = " + src->to_string();
