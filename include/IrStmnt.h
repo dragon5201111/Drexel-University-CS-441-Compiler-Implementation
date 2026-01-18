@@ -40,8 +40,27 @@ public:
     }
 };
 
-class IrCallStmnt final: public IrStmnt {
+class IrCallStmnt final : public IrStmnt {
 public:
+    std::shared_ptr<IrVariable> dest;
+    std::shared_ptr<IrVariable> addr;
+    std::shared_ptr<IrVariable> receiver;
+    std::vector<std::shared_ptr<IrValue>> args;
+
+    IrCallStmnt(const std::shared_ptr<IrVariable>& dest,
+                const std::shared_ptr<IrVariable>& addr,
+                const std::shared_ptr<IrVariable>& receiver,
+                std::vector<std::shared_ptr<IrValue>> args)
+        : dest(dest), addr(addr), receiver(receiver), args(std::move(args)) {}
+
+    [[nodiscard]] std::string to_string() const override {
+        std::string call = dest->to_string() + " = call(" + addr->to_string() + ", " + receiver->to_string();
+        for (auto &arg : args) {
+            call += ", " + arg->as_value();
+        }
+        call += ")";
+        return call;
+    }
 };
 
 class IrPhiStmnt final: public IrStmnt {

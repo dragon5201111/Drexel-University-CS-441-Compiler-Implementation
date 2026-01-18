@@ -9,8 +9,7 @@ class IrValue : public Printable {
 public:
     ~IrValue() override = default;
     [[nodiscard]] std::string to_string() const override = 0;
-    // For IrValues that can be represented in two ways
-    [[nodiscard]] virtual std::string as_value() const { return to_string(); }
+    [[nodiscard]] virtual std::string as_value() const { return to_string(); } // For IrValues that can be represented in two ways
 };
 
 class IrVariable final: public IrValue {

@@ -17,7 +17,7 @@ public:
         std::shared_ptr<IrLabel> label,
         std::vector<std::unique_ptr<IrStmnt>> &&primitives,
         std::unique_ptr<IrControlTransfer> control,
-        std::vector<std::shared_ptr<IrVariable>> args
+        std::vector<std::shared_ptr<IrVariable>> args = {}
     )
         : label(std::move(label)),
           args(std::move(args)),
