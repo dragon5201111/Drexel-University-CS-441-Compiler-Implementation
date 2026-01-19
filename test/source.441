@@ -6,6 +6,7 @@ class A [
 class B [
     fields y
     method m() with locals:
+      !this.y = 2
       return 0
 ]
 

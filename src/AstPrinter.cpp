@@ -105,35 +105,40 @@ void AstPrinter::visit_method_decl(const MethodDecl &decl) {
     for (auto& local : decl.locals) {
         writer->write(local + ",");
     }
-    writer->write(": ");
+    writer->write(": \n");
     for (auto& stmnt : decl.body) {
         stmnt->accept(*this);
+        writer->write("\n");
     }
 }
 
 void AstPrinter::visit_class_decl(const ClassDecl &decl) {
-    writer->write("class " + decl.name + "[");
+    writer->write("class " + decl.name + "[\n");
     writer->write("fields ");
     for (auto& field : decl.fields) {
         writer->write(field + ",");
     }
+    writer->write("\n");
     for (auto& method : decl.methods) {
         writer->write(" ");
         method->accept(*this);
     }
-    writer->write("]");
+    writer->write("]\n");
 }
 
 void AstPrinter::visit_prog_decl(const ProgDecl &decl) {
     for (auto& class_decl : decl.class_decls) {
         class_decl->accept(*this);
+        writer->write("\n");
     }
     writer->write("main with ");
     for (auto& local : decl.locals) {
         writer->write(local + ",");
     }
+    writer->write(":\n");
     for (auto& stmnt : decl.body) {
         stmnt->accept(*this);
+        writer->write("\n");
     }
 }
 

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "CfgBuilder.h"
 #include "../include/AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
@@ -35,11 +34,9 @@ int main(const int argc, char* argv[]) {
     std::cout << "===PRINTING AST OF PROGRAM===" << std::endl;
     auto prog_decl = parser.parse_prog_decl();
     prog_decl->accept(ast_printer);
-    std::cout << std::endl << "===END AST OF PROGRAM===" << std::endl;
+    std::cout <<  "===END AST OF PROGRAM===" << std::endl;
 
     std::cout << "===PRINTING IR===" << std::endl;
-    CfgBuilder ir_gen_visitor(writer);
-    prog_decl->accept(ir_gen_visitor);
-    ir_gen_visitor.write();
+
     std::cout << "===END OF IR===" << std::endl;
 }
