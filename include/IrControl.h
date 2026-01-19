@@ -14,8 +14,8 @@ public:
 };
 
 class IrJumpTransfer final: public IrControlTransfer {
-public:
     std::shared_ptr<IrName> target;
+public:
     explicit IrJumpTransfer(const std::shared_ptr<IrName>& target) : target(target) {}
 
    [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
@@ -28,11 +28,10 @@ public:
 };
 
 class IrCondTransfer final: public IrControlTransfer {
-public:
     std::shared_ptr<IrVariable> var;
     std::shared_ptr<IrName> then_block;
     std::shared_ptr<IrName> else_block;
-
+public:
     explicit IrCondTransfer(const std::shared_ptr<IrVariable>& var, const std::shared_ptr<IrName>& then_block, const std::shared_ptr<IrName>& else_block)
         : var(var), then_block(then_block), else_block(else_block) {}
 
@@ -46,8 +45,8 @@ public:
 };
 
 class IrReturnTransfer final: public IrControlTransfer {
-public:
     std::shared_ptr<IrValue> value;
+public:
     explicit IrReturnTransfer(const std::shared_ptr<IrValue>& value) : value(value) {}
 
     [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {
@@ -90,8 +89,8 @@ class IrFailReasonNoSuchMethod final: public IrFailReason {
 };
 
 class IrFailTransfer final: public IrControlTransfer {
-public:
     std::unique_ptr<IrFailReason> reason;
+public:
     explicit IrFailTransfer(std::unique_ptr<IrFailReason> reason) : reason(std::move(reason)) {}
 
     [[nodiscard]] std::vector<std::shared_ptr<IrName>> successors() const override {

@@ -9,28 +9,31 @@
 class BasicBlock final : public Printable {
 public:
     std::shared_ptr<IrName> label;
-    std::vector<std::shared_ptr<IrVariable>> args;
+    std::vector<std::shared_ptr<IrVariable>> params;
     std::vector<std::unique_ptr<IrStmnt>> primitives;
     std::unique_ptr<IrControlTransfer> control;
 
+    std::vector<std::shared_ptr<BasicBlock>> predecessors;
+    std::vector<std::shared_ptr<BasicBlock>> successors;
+
     explicit BasicBlock(
         std::shared_ptr<IrName> label,
-        std::vector<std::unique_ptr<IrStmnt>> &&primitives,
+        std::vector<std::unique_ptr<IrStmnt>> primitives,
         std::unique_ptr<IrControlTransfer> control,
-        std::vector<std::shared_ptr<IrVariable>> args = {}
+        std::vector<std::shared_ptr<IrVariable>> params = {}
     )
         : label(std::move(label)),
-          args(std::move(args)),
+          params(std::move(params)),
           primitives(std::move(primitives)),
           control(std::move(control)) {}
 
     [[nodiscard]] std::string to_string() const override {
         std::string block = label->to_string();
-        if (!args.empty()) {
+        if (!params.empty()) {
             block += "(";
-            for (size_t i = 0; i < args.size(); ++i) {
+            for (size_t i = 0; i < params.size(); ++i) {
                 if (i > 0) block += ", ";
-                block += args[i]->to_string();
+                block += params[i]->to_string();
             }
             block += ")";
         }

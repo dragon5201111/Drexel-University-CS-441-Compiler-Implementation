@@ -13,8 +13,8 @@ public:
 };
 
 class IrVariable final: public IrValue {
-public:
     std::string name;
+public:
     explicit IrVariable(std::string name) : name(std::move(name)) {}
 
     [[nodiscard]] std::string to_string() const override {
@@ -23,8 +23,8 @@ public:
 };
 
 class IrName final: public IrValue {
-public:
     std::string name;
+public:
     explicit IrName(std::string name) : name(std::move(name)) {}
 
     [[nodiscard]] std::string to_string() const override {
@@ -33,8 +33,8 @@ public:
 };
 
 class IrConstant final: public IrValue {
-public:
     uint32_t value;
+public:
     explicit IrConstant(const uint32_t value) : value(value) {}
 
     [[nodiscard]] std::string to_string() const override {
@@ -43,10 +43,9 @@ public:
 };
 
 class IrGlobalData final: public IrValue {
-public:
     std::string name;
     std::vector<std::shared_ptr<IrValue>> values;
-
+public:
     explicit IrGlobalData(std::string name, const std::vector<std::shared_ptr<IrValue>>& values)
         : name(std::move(name)), values(values) {}
 

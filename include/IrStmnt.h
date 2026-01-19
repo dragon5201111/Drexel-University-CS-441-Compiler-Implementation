@@ -10,10 +10,9 @@ public:
 };
 
 class IrAssignStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrValue> src;
-
+public:
     explicit IrAssignStmnt(const std::shared_ptr<IrVariable>& dest, const std::shared_ptr<IrValue>& src)
         : dest(dest), src(src) {}
 
@@ -23,12 +22,11 @@ public:
 };
 
 class IrBinaryOpStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrVariable> lhs;
     std::shared_ptr<IrVariable> rhs;
     std::string op;
-
+public:
     IrBinaryOpStmnt(const std::shared_ptr<IrVariable>& dest,
                     const std::shared_ptr<IrVariable>& lhs,
                     const std::shared_ptr<IrVariable>& rhs,
@@ -41,12 +39,11 @@ public:
 };
 
 class IrCallStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrVariable> addr;
     std::shared_ptr<IrVariable> receiver;
     std::vector<std::shared_ptr<IrValue>> args;
-
+public:
     IrCallStmnt(const std::shared_ptr<IrVariable>& dest,
                 const std::shared_ptr<IrVariable>& addr,
                 const std::shared_ptr<IrVariable>& receiver,
@@ -68,10 +65,9 @@ public:
 };
 
 class IrAllocStmnt final: public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrConstant> size;
-
+public:
     explicit IrAllocStmnt(const std::shared_ptr<IrVariable>& dest, const std::shared_ptr<IrConstant>& size)
         : dest(dest), size(size) {}
 
@@ -81,9 +77,8 @@ public:
 };
 
 class IrPrintStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrValue> src;
-
+public:
     explicit IrPrintStmnt(const std::shared_ptr<IrValue>& src) : src(src) {}
 
     [[nodiscard]] std::string to_string() const override {
@@ -92,11 +87,10 @@ public:
 };
 
 class IrGetElStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrVariable> src;
     std::shared_ptr<IrValue> index;
-
+public:
     IrGetElStmnt(const std::shared_ptr<IrVariable>& dest,
                  const std::shared_ptr<IrVariable>& src,
                  const std::shared_ptr<IrValue>& index)
@@ -109,11 +103,10 @@ public:
 
 
 class IrSetElStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrValue> index_one;
     std::shared_ptr<IrValue> index_two;
-
+public:
     IrSetElStmnt(const std::shared_ptr<IrVariable>& dest,
                  const std::shared_ptr<IrValue>& index_one,
                  const std::shared_ptr<IrValue>& index_two)
@@ -125,10 +118,9 @@ public:
 };
 
 class IrLoadStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> dest;
     std::shared_ptr<IrVariable> src;
-
+public:
     IrLoadStmnt(const std::shared_ptr<IrVariable>& dest, const std::shared_ptr<IrVariable>& src)
         : dest(dest), src(src) {}
 
@@ -138,10 +130,9 @@ public:
 };
 
 class IrStoreStmnt final : public IrStmnt {
-public:
     std::shared_ptr<IrVariable> base;
     std::shared_ptr<IrValue> value;
-
+public:
     IrStoreStmnt(const std::shared_ptr<IrVariable>& base, const std::shared_ptr<IrValue>& value)
         : base(base), value(value) {}
 
