@@ -26,5 +26,4 @@ add_executable(Drexel_University_CS_441_Compiler_Implementation
         include/IrValue.h
         include/Writer.h
         src/Writer.cpp
-        include/IrGen.h
-        src/IrGen.cpp)
+)

@@ -47,8 +47,7 @@ public:
     std::string name;
     std::vector<std::shared_ptr<IrValue>> values;
 
-    explicit IrGlobalData(std::string name,
-                          const std::vector<std::shared_ptr<IrValue>>& values)
+    explicit IrGlobalData(std::string name, const std::vector<std::shared_ptr<IrValue>>& values)
         : name(std::move(name)), values(values) {}
 
     [[nodiscard]] std::string to_string() const override {
