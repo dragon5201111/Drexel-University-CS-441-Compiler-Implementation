@@ -23,18 +23,18 @@ public:
 
 class IrBinaryOpStmnt final : public IrStmnt {
     std::shared_ptr<IrVariable> dest;
-    std::shared_ptr<IrVariable> lhs;
-    std::shared_ptr<IrVariable> rhs;
+    std::shared_ptr<IrValue> lhs;
+    std::shared_ptr<IrValue> rhs;
     std::string op;
 public:
     IrBinaryOpStmnt(const std::shared_ptr<IrVariable>& dest,
-                    const std::shared_ptr<IrVariable>& lhs,
-                    const std::shared_ptr<IrVariable>& rhs,
+                    const std::shared_ptr<IrValue>& lhs,
+                    const std::shared_ptr<IrValue>& rhs,
                     std::string op)
         : dest(dest), lhs(lhs), rhs(rhs), op(std::move(op)) {}
 
     [[nodiscard]] std::string to_string() const override {
-        return dest->to_string() + " = " + lhs->to_string() + " " + op + " " + rhs->to_string();
+        return dest->to_string() + " = " + lhs->as_value() + " " + op + " " + rhs->as_value();
     }
 };
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "Cfg.h"
 #include "../include/AstPrinter.h"
 #include "Parser.h"
 #include "Tokenizer.h"
@@ -35,8 +36,4 @@ int main(const int argc, char* argv[]) {
     auto prog_decl = parser.parse_prog_decl();
     prog_decl->accept(ast_printer);
     std::cout <<  "===END AST OF PROGRAM===" << std::endl;
-
-    std::cout << "===PRINTING IR===" << std::endl;
-
-    std::cout << "===END OF IR===" << std::endl;
 }

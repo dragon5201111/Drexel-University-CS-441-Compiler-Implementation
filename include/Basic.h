@@ -13,19 +13,7 @@ public:
     std::vector<std::unique_ptr<IrStmnt>> primitives;
     std::unique_ptr<IrControlTransfer> control;
 
-    std::vector<std::shared_ptr<BasicBlock>> predecessors;
-    std::vector<std::shared_ptr<BasicBlock>> successors;
-
-    explicit BasicBlock(
-        std::shared_ptr<IrName> label,
-        std::vector<std::unique_ptr<IrStmnt>> primitives,
-        std::unique_ptr<IrControlTransfer> control,
-        std::vector<std::shared_ptr<IrVariable>> params = {}
-    )
-        : label(std::move(label)),
-          params(std::move(params)),
-          primitives(std::move(primitives)),
-          control(std::move(control)) {}
+    explicit BasicBlock(std::shared_ptr<IrName> label) : label(std::move(label)) {}
 
     [[nodiscard]] std::string to_string() const override {
         std::string block = label->to_string();
